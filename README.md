@@ -12,6 +12,7 @@ For each weekly lecture in CS50 there is a corresponding `lecture[n]` in this di
 Similarly, the folder contains weekly programming challenges in `pset[n]` files which have been translated for use on the Salesforce platform. 
 
 ### Course Goals
+[test link](./docs/lecture0.md)
 
 ### Ok I'm convinced (sort of)...now what? 
 
