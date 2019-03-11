@@ -7,12 +7,11 @@ The "z" stands for [Zinovo](https://www.zinovo.com/). The "s" is up to you (scie
 Where CS50 guides students through the intellectual art of programming and algorithmic thought using popular general-purpose languages like `C` and `Python`, ZS50 adapts that course's content and weekly challenges around Salesforce's proprietary `Apex` language. Challenges also incorporate other important features of the Salesforce runtime, including `SOQL` (SQL-*ish* query language), `Javascript` (used client-side in Lightning), and anything else we happen to think is pertinent to the weekly discussions. 
 
 ### Format
-For each weekly lecture in CS50 there is a corresponding `lecture[n]` in this directory's `docs` folder with some Salesforce-specific content and discussions for that week. You can also access these in a prettier format over at https://alpha-bytes.github.io/zs50-content. 
+For each weekly lecture in CS50 there is a corresponding `week[n]` in the [lectures](./lectures) sub-folder with some Salesforce-specific content and discussions. You can also access these in a prettier format over at https://alpha-bytes.github.io/zs50-content. 
 
-Similarly, the folder contains weekly programming challenges in `pset[n]` files which have been translated for use on the Salesforce platform. 
+Similarly, the [psets](./psets) folder contains weekly programming challenges which have been translated for use on the Salesforce platform. 
 
 ### Course Goals
-[test link](./docs/lecture0.md)
 
 ### Ok I'm convinced (sort of)...now what? 
 
