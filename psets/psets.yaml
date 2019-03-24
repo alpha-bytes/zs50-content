@@ -6,8 +6,9 @@ meta:
 
 psets:
   sayHello: 
+    apexName: SayHello
     scaffold: |
-      "public class ZS50_SayHello {
+      "public class SayHello {
     
         public String sayHi(){
           // TODO initialize a string with value 'Hello, World!' 
