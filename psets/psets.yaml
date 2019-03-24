@@ -13,12 +13,13 @@ psets:
         public String sayHi(){
           // TODO initialize a string with value 'Hello, World!' 
           // write it to Apex debug logs
+          // return it
         }
 
-        // implement a public method that: 
-        // 1: returns a string
-        // 2: takes a single String as an argument
-        // 3: writes the argument to the debug logs, and returns the same
+        // implement a public method speak() that...
+        // 1.: takes a single String as an argument
+        // 2: writes the argument to the debug logs, and returns the same
+        // 3: returns the same string passed into the method, but converted to lowercase
 
       }"
 
