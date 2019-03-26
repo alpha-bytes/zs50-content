@@ -40,14 +40,13 @@ globalVars:
   - String s; 
   - String SPEAK_1 = 'Feel the power of ZS50...'; 
   - String SPEAK_2 = 'These are not the Strings you seek...'; 
-  - String SPEAK_3; 
 
 # **OPTIONAL**
 # Prevalidation executions are wrapped in a try/catch block, and are helpful for any pre-processing steps required for validations.
 # steps. Often they will perform actions against global variables initialized above. 
 executePrevalidation: 
   - sayHello = new SayHello();
-  - SPEAK_3 = sayMyName(); 
+  - SPEAK_3 = sayHello.sayMyName(); 
 
 # **REQUIRED**
 # At least one validation is required per pset. Each validation is wrapped in its own try/catch block. Valid keys include: 
