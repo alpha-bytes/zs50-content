@@ -16,9 +16,11 @@ sayHello:
       // 3: returns the same string passed into the method, but converted to lowercase
 
     }"
+  globalVars:
+    - SayHello sayHello; 
+    - String s; 
   executePrevalidation: 
-    - SayHello sayHello = new SayHello();
-    - String s;
+    - sayHello = new SayHello();
   validations:
     - execute: s = sayHello.sayHi();
       assert: system.assertEquals('Hello, World', s);
