@@ -3,9 +3,10 @@
 ##########################
 ## IMPLEMENTATION NOTES ##
 ##########################
-# - Any values that will be used as Apex statements should be properly terminated with a semi-colon. 
-# - Multi-line literal blocks, a la 'scaffold' values, are recommended to be wrapped in double quotes as YAML allows more
-# escape sequences than values wrapped in single quotes.
+# - Any values that will be used as Apex statements should be properly terminated with a semi-colon.
+# - It is recommended to enclose all values that will be used as Apex statements in double-quotes, especially  
+#   multi-line literal blocks, a la 'scaffold' values. This is especially true when working with Strings, as Apex 
+#   requires strings to be enclosed in single-quotes. 
 
 # **REQUIRED** Each pset must correlate to one apex class, whose name is represented by apexName.
 apexName: SayHello
@@ -36,18 +37,18 @@ scaffold: |
 # Following are variables that get initialized in the global scope of the execute anonymous transaction.
 # They are NOT wrapped in a try/catch block. As such, it is recommended these either be initialized to null or a constant value.
 globalVars:
-  - SayHello sayHello; 
-  - String s; 
-  - String SPEAK_1 = 'Feel the power of ZS50...'; 
-  - String SPEAK_2 = 'These are not the Strings you seek...'; 
-  - String SPEAK_3;
+  - "SayHello sayHello;""
+  - "String s;" 
+  - "String SPEAK_1 = 'Feel the power of ZS50...';"
+  - "String SPEAK_2 = 'These are not the Strings you seek...';"
+  - "String SPEAK_3;"
 
 # **OPTIONAL**
 # Prevalidation executions are wrapped in a try/catch block, and are helpful for any pre-processing steps required for validations.
 # steps. Often they will perform actions against global variables initialized above. 
 executePrevalidation: 
-  - sayHello = new SayHello();
-  - SPEAK_3 = sayHello.sayMyName(); 
+  - "sayHello = new SayHello();"
+  - "SPEAK_3 = sayHello.sayMyName();"
 
 # **REQUIRED**
 # At least one validation is required per pset. Each validation is wrapped in its own try/catch block. Valid keys include: 
@@ -59,15 +60,15 @@ executePrevalidation:
 #    will be returned as the exception message in cases where `assert` does not throw an uncatachable exception. 
 validations:
   
-  - execute: s = sayHello.sayHi();
-    assert: Hello, World'.equals(s);
-    invMsg: String.format('Expecting \'Hello, World\', received {0}', new List<Object>{ s });
+  - execute: "s = sayHello.sayHi();"
+    assert: "'Hello, World'.equals(s);"
+    invMsg: "String.format('Expecting \'Hello, World\', received {0}', new List<Object>{ s });"
   
-  - assert: system.assertEquals(SPEAK_1.toLowerCase(), sayHello.speak(SPEAK_1)); 
+  - assert: "system.assertEquals(SPEAK_1.toLowerCase(), sayHello.speak(SPEAK_1));" 
 
-  - assert: system.assertEquals(SPEAK_2.toLowerCase(), sayHello.speak(SPEAK_2)); 
+  - assert: "system.assertEquals(SPEAK_2.toLowerCase(), sayHello.speak(SPEAK_2));" 
 
-  - assert: system.assertEquals(SPEAK_3.toLowerCase(), sayHello.speak(SPEAK_3)); 
+  - assert: "system.assertEquals(SPEAK_3.toLowerCase(), sayHello.speak(SPEAK_3));"
      
 
   
