@@ -59,7 +59,7 @@ executePrevalidation:
 #  - assert: Required if 'evaluate' excluded or null. Any of the Apex system.Assert() variants. Note that if an assertion fails, an uncatchable
 #    System.Exception is thrown and returned to the caller. In these cases 'invMsg' is ignored.
 #  - evaluate: Required if assert excluded or null. Any statement that evaluates to a Boolean, where true indicates a passing assertion, and false a failing one. Note that
-#    the various Apex System.assert() variants may NOT be usedhere , as they do not evaluate to a Boolean and throw uncatchable exceptions. 
+#    the various Apex System.assert() variants may NOT be used here , as they do not evaluate to a Boolean and throw uncatchable exceptions. 
 #  - execute: (optional) steps to be completed prior to assertion. 
 #  - invMsg: (optional) If a custom exception message is desired, this value is any apex statement that evaluates to a single, valid String, which
 #    will be returned as the exception message.
@@ -69,6 +69,9 @@ validations:
     evaluate: "'Hello, World'.equals(s);"
     invMsg: "String.format('Expecting \\'Hello, World\\', received {0}', new List<Object>{ s });"
   
+  - execute: "s = sayHello.sayMyName();"
+    evaluate: "s != null && s.length() > 0;"
+
   - assert: "system.assertEquals(SPEAK_1.toLowerCase(), sayHello.speak(SPEAK_1));" 
 
   - assert: "system.assertEquals(SPEAK_2.toLowerCase(), sayHello.speak(SPEAK_2));" 
