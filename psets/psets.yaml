@@ -19,7 +19,11 @@ sayHello:
   executePrevalidation: 
     - SayHello sayHello = new SayHello();
     - String s;
-  
+  validations:
+    - execute: s = sayHello.sayHi();"
+      check: system.assertEquals('Hello, World', s);
+      invMsg: String.format('Expecting \'Hello, World\', received {0}', new List<Object>{ s });
+
   
 
 ...
