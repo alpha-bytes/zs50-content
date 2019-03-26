@@ -70,7 +70,7 @@ validations:
     invMsg: "String.format('Expecting \\'Hello, World\\', received {0}', new List<Object>{ s });"
   
   - execute: "s = sayHello.sayMyName();"
-    evaluate: "s != null && s.length() > 0;"
+    evaluate: "s != null;"
 
   - assert: "system.assertEquals(SPEAK_1.toLowerCase(), sayHello.speak(SPEAK_1));" 
 
