@@ -7,6 +7,10 @@
 # - It is recommended to enclose all values that will be used as Apex statements in double-quotes, especially  
 #   multi-line literal blocks, a la 'scaffold' values. This is especially true when working with Strings, as Apex 
 #   requires strings to be enclosed in single-quotes. 
+# - When escaping single quotes for Apex statements, if the statement is enclosed in double quotes remember to double escape, otherwise
+#   your YAML will not parse properly. Example:  
+#   RIGHT: "system.debug(' Expecting value \\'x\\' ');"
+#   WRONG: "system.debug(' Expecting value \'x\' ');  
 
 # **REQUIRED** Each pset must correlate to one apex class, whose name is represented by apexName.
 apexName: SayHello
@@ -62,7 +66,7 @@ validations:
   
   - execute: "s = sayHello.sayHi();"
     assert: "'Hello, World'.equals(s);"
-    invMsg: "String.format('Expecting \'Hello, World\', received {0}', new List<Object>{ s });"
+    invMsg: "String.format('Expecting \\'Hello, World\\', received {0}', new List<Object>{ s });"
   
   - assert: "system.assertEquals(SPEAK_1.toLowerCase(), sayHello.speak(SPEAK_1));" 
 
