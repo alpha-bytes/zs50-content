@@ -63,7 +63,9 @@ validations:
   
   - assert: system.assertEquals(SPEAK_1.toLowerCase(), sayHello.speak(SPEAK_1)); 
 
-  - assert: 
+  - assert: system.assertEquals(SPEAK_2.toLowerCase(), sayHello.speak(SPEAK_2)); 
+
+  - assert: system.assertEquals(SPEAK_3.towLowerCase(), sayHello.speak(SPEAK_3)); 
      
 
   
