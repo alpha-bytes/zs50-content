@@ -37,7 +37,7 @@ scaffold: |
 # Following are variables that get initialized in the global scope of the execute anonymous transaction.
 # They are NOT wrapped in a try/catch block. As such, it is recommended these either be initialized to null or a constant value.
 globalVars:
-  - "SayHello sayHello;""
+  - "SayHello sayHello;"
   - "String s;" 
   - "String SPEAK_1 = 'Feel the power of ZS50...';"
   - "String SPEAK_2 = 'These are not the Strings you seek...';"
