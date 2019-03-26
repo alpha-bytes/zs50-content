@@ -60,7 +60,7 @@ executePrevalidation:
 validations:
   
   - execute: s = sayHello.sayHi();
-    assert: 'Hello, World'.equals(s);
+    assert: Hello, World'.equals(s);
     invMsg: String.format('Expecting \'Hello, World\', received {0}', new List<Object>{ s });
   
   - assert: system.assertEquals(SPEAK_1.toLowerCase(), sayHello.speak(SPEAK_1)); 
