@@ -51,14 +51,16 @@ executePrevalidation:
 
 # **REQUIRED**
 # At least one validation is required per pset. Each validation is wrapped in its own try/catch block. Valid keys include: 
-#  - assert: (required) any of the Apex System.Assert() variants. 
+#  - assert: (required) Any statement that evaluates to a Boolean, where true indicates a passing assertion, and false a failing one. Note that
+#    while any of the Apex System.assert() variants may be used, they throw an uncatchable fatal exception that cannot be used with the 'invMsg'
+#    key described below. 
 #  - execute: (optional) steps to be completed prior to assertion. 
-#  - invMsg: (optional) assertions that return false result in a system-thrown exception in Apex, which is returned by default. If a custom
-#    exception message is desired, this value is any apex statement that evaluates to a single, valid String. 
+#  - invMsg: (optional) If a custom exception message is desired, this value is any apex statement that evaluates to a single, valid String, which
+#    will be returned as the exception message. 
 validations:
   
   - execute: s = sayHello.sayHi();
-    assert: system.assertEquals('Hello, World', s);
+    assert: 'Hello, World'.equals(s); 
     invMsg: String.format('Expecting \'Hello, World\', received {0}', new List<Object>{ s });
   
   - assert: system.assertEquals(SPEAK_1.toLowerCase(), sayHello.speak(SPEAK_1)); 
