@@ -5,7 +5,7 @@ sayHello:
     "public class SayHello {
   
       public String sayHi(){
-        // TODO initialize a string with value 'Hello, World!' 
+        // TODO initialize a string with value 'Hello, World' 
         // write it to Apex debug logs
         // return it
       }
@@ -16,6 +16,14 @@ sayHello:
       // 3: returns the same string passed into the method, but converted to lowercase
 
     }"
+    executePrevalidation: 
+      - SayHello sayHello = new SayHello();
+      - String s;
+    validations:
+      - 
+        execute: s = sayHello.sayHi();
+        check: system.assertEquals('Hello, World', s);
+        invMsg: String.format('Expecting \'Hello, World\', received {0}', new List<Object>{ s }); 
 
   
 
