@@ -12,12 +12,16 @@ For each weekly lecture in CS50 there is a corresponding `week[n]` in the [lectu
 Similarly, the [psets](psets/list.md) folder contains weekly programming challenges which have been translated for use on the Salesforce platform. 
 
 ### Course Goals
-Above and beyond the goals of *CS50* itself, we hope you'll achieve: 
-- Hands-on experience with developer tools including: 
-    - `VS Code` (IDE) and relevant Salesforce extensions
-    - `SFDX` command-line-interface (CLI)
+TODO
 
-### Ok I'm convinced (sort of)...now what? 
+### Ok I'm convinced (sort of)...now what?
+1. Sign up for a free [Github account](https://github.com/join) if you don't have one already.
+2. Watch the weekly CS50 lecture (beginning with `week 0`, not week 1)
+3. Review the Salesforce-specific [lecture notes](./lectures/list.md) for the week
+4. Complete the weekly Apex challenges located in the [psets](./psets/list.md) folder. For this you can use a ready-to-run
+[CS50 Sandbox](https://sandbox.cs50.io/?name=ZS50_0.2&script=mkdir%20classes%20%26%26%20npm%20i%20git%2Bhttps%3A%2F%2Fgithub.com%2Falpha-bytes%2Fzs50.git%20%26%26%20npm%20link%20.%2Fnode_modules%2Fzs50&window=editor&window=terminal) configured specifically for completing the challenges. 
+
+You can also complete the challenges on your local machine, but it requires a bit more setup (TODO). 
 
 ### Happy Trails
 A few parting thoughts before you embark: 
