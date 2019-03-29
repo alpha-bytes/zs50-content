@@ -19,15 +19,16 @@ TODO
 
 ### Ok I'm convinced (sort of)...now what?
 1. Sign up for a free [Github account](https://github.com/join) if you don't have one already.
-2. Watch the weekly CS50 lecture (beginning with `week 0`, not week 1)
+2. Watch the weekly CS50 lecture (beginning with `week 0`, not week 1). You can find these on the [CS50 Youtube Channel](https://www.youtube.com/channel/UCcabW7890RKJzL968QWEykA) or by registering for the (again, free) course at [EDX](https://www.edx.org/course/cs50s-introduction-computer-science-harvardx-cs50x). 
+> Aside: While you don't need to register for CS50 to take *ZS50*, it's a nice way to get access to the lectures, notes, video shorts, and `C` problem sets organized by week. If you're an extra-credit type of person, you could also complete the CS50 psets to compare / contrast how to solve the same types of problems in Apex. Onward...
 3. Review the Salesforce-specific [lecture notes](./lectures/list.md) for the week
 4. Complete the weekly Apex challenges located in the [psets](./psets/list.md) folder. For this you can use a ready-to-run
 [CS50 Sandbox](https://sandbox.cs50.io/?name=ZS50_0.2&script=mkdir%20classes%20%26%26%20npm%20i%20git%2Bhttps%3A%2F%2Fgithub.com%2Falpha-bytes%2Fzs50.git%20%26%26%20npm%20link%20.%2Fnode_modules%2Fzs50&window=editor&window=terminal) configured specifically for completing the challenges. 
+5. Completion of the challenges requires typing some basic commands into the provided terminal window using the `zs50` command line utility. Documentation for the can be found [here](https://github.com/alpha-bytes/zs50). 
 
 You can also complete the challenges on your local machine, but it requires a bit more setup (TODO). 
 
 ### Happy Trails
-A few parting thoughts before you embark: 
+Some parting thoughts before you embark: 
 - Like it's namesake, ZS50 will continue evolving. Expect change and you won't be disappointed. 
-- As David is fond of saying, where you end up relative to others at the end of this course doesn't much matter. It's where you end up relative to *yourself* that counts. 
-- 
+- As David is fond of saying, where you end up relative to others at the end of this course doesn't much matter. It's where you end up relative to *yourself* that counts.
