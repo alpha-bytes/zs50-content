@@ -72,6 +72,8 @@ validations:
   - execute: "s = sayHello.sayMyName();"
     evaluate: "s != null;"
 
+  - assert: "system.assertEquals('Invalid argument', sayHello.speak(null));"
+
   - assert: "system.assertEquals(SPEAK_1.toLowerCase(), sayHello.speak(SPEAK_1));" 
 
   - assert: "system.assertEquals(SPEAK_2.toLowerCase(), sayHello.speak(SPEAK_2));" 
