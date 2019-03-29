@@ -33,7 +33,7 @@ scaffold: |
     // implement a public method speak() that...
     // 1.: takes a single String as an argument
     // 2: writes the argument to the debug log
-    // 3: returns the same string passed into the method, AFTER CONVERTING to lowercase
+    // 3: returns the same string passed into the method, AFTER CONVERTING to lowercase (Hint: See String class: https://sforce.co/2WwVY3S)
 
   }"
 
