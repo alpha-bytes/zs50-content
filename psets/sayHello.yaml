@@ -31,9 +31,10 @@ scaffold: |
     // returns a String with your name 
 
     // implement a public method speak() that...
-    // 1.: takes a single String as an argument
-    // 2: writes the argument to the debug log
-    // 3: returns the same string passed into the method, AFTER CONVERTING to lowercase (Hint: See String class: https://sforce.co/2WwVY3S)
+    // 1. takes a single String as an argument
+    // 2. checks to make sure the string is not null 
+      // 2a: if it is, return a new String 'Invalid argument'
+      // 2b: else, returns the same string passed into the method, AFTER CONVERTING to lowercase (Hint: See String class: https://sforce.co/2WwVY3S)
 
   }"
 
