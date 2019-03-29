@@ -1,8 +1,9 @@
 ## This is `ZS50`
 
-> Shortcuts:
 > [Course Documentation Home](https://alpha-bytes.github.io/zs50-content)
+> 
 > [Lecture Notes](./lectures/list.md)
+> 
 > [Apex Challenges a.k.a psets](./psets/list.md)
 
 ZS50 is a companion resource to the immensely popular online course *CS50* from [Harvard EDX](https://www.edx.org/course/cs50s-introduction-computer-science-harvardx-cs50x), after which it is shamelessly named. This course is for developers and would-be-developers looking to sharpen their skills in general and, specifically, on the Salesforce platform. 
