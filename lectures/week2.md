@@ -25,14 +25,21 @@ Otherwise, the primary takeaways for this section are:
 ### Memory
 Next week's CS50 lecture covers memory so we'll hold off our deep-dive until then, too. For now just keep in mind that, even developing on a powerful platform like Salesforce, we are still constrained by the limits of the underlying hardware. 
 
-These limitations are manifest in platform-enforced [Governors and Limits](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_limits_intro.htm) such as those relating to total `heap` size and `stack` depth, for example. These are two important CS terms to keep in mind for next week so, for now, just put 'em in your back pocket.
+These limitations are manifest in platform-enforced [Governors and Limits](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_limits_intro.htm) such as those relating to total `heap` size and `stack` depth, for example. These are two important CS terms to keep in mind for next week so, for now, just collect 'em in your back pocket. Speaking of `collections`...
+
+Smooth segue, no?
+
+![segwayFail](https://media.giphy.com/media/9048oxDWssE24/giphy.gif)
 
 
-### Arrays
+### Collections
+Collections, such as `Arrays` and `Lists`, are hugely important to the way code is written in Apex. Anyone who has worked through a programmatic Trailhead module for more than 5 minutes has heard the terms **bulkification** or **bulkified** at least 92 times, and there's a good reason for it: Salesforce needs operations to execute efficiently in order to ensure resource availability for all tenants on their platform. 
+
+In fact, there are several means by which Salesforce forces us to implement bulkified code. One of those approaches is through Apex Triggers and the [context variables](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers_context_variables.htm) Salesforce provides to us within a given trigger. 
+
+
+
 ```
-- hugely important in apex
-    - multi-tenant platform, bulkified code
-- compare to flow collection variables
 - types of collections (list, set, map)
     - hashcode
 - implicit, or requisite, collection contexts
