@@ -81,7 +81,7 @@ For now don't worry about the cryptic keywords like `public`, `void` etc. We'll 
 ##### Flow Control
 Though it sounds like something from a prescription drug commercial, `flow control` refers to special statements, or `blocks`, that interrupt the typical *top-to-bottom, left-to-right* way in which code is executed. 
 
-You saw examples of these flow controls in the week1 lecture, and they can be categorized as either `conditional` (think **if**, **else**, **else if** or `iteration` controls (**for** loops). Flow control statements like **while** contain elements of both - and really all flow control is conditional, if you think about it - but it's a good mental heuristic for categorizing them. 
+You saw examples of these flow controls in the week1 lecture, and they can be categorized as either `conditional` (think **if**, **else**, **else if**) or `iteration` (**for** loops). Flow control statements like **while** contain elements of both - and really all flow control is conditional, if you think about it - but it's a good mental heuristic for categorizing them. 
 
 > You can find a description of each of the supported control flow statements in Apex [here](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_control_flow.htm). 
 
