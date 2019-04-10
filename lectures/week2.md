@@ -1,14 +1,14 @@
-## Week 2: Arrays
+# Week 2: Arrays
 
-### CS50 Week 2
+## CS50 Week 2
 Use the links below to catchup on CS50's week1 content: 
 
 - [Lecture](https://www.youtube.com/watch?v=u-kH-5JJSgU)
 - [Notes](https://cs50.harvard.edu/college/weeks/2/notes/)
 
-### ZS50 Week 2
+## ZS50 Week 2
 
-#### Compilation
+### Compilation
 CS50 kicks off week 2 with an overview of compilation, the process of converting source code like `C` or `Apex` into something a computer can execute. Compilation includes sub-steps such as: 
 
 - preprocessing
@@ -75,18 +75,19 @@ If you said `500`, you're today's big winner!
 
 ![winner](https://media.giphy.com/media/3ohhwGl5urKvvygu08/giphy.gif)
 
+#### Trigger Best Practices
+I would be remise to not mention a common - and *highly* recommended - best practice for writing Apex triggers. 
 
+TODO 
 
+#### Apex Collection Types
 
+TODO
 
 
 ```
 - types of collections (list, set, map)
     - hashcode
-- implicit, or requisite, collection contexts
-    - triggers (link to context vars)
-    - declarative automations (link to automation order)
-    - batch apex
 - triggers
     - issues with triggers
     - handler, best practice
@@ -94,6 +95,9 @@ If you said `500`, you're today's big winner!
 ```
 
 ### Sorting
+
+TODO reference section
+
 ```
 - implement in Apex?
     - no, but can make more efficient 
@@ -137,7 +141,7 @@ public class SayHello{
 }
 ```
 
-Now, say every time we `instantiate` (fancy term for "creating an instance of") a `SayHello` object we want to let the caller declare a default String, we could do that via an explicit constructor: 
+Now say, for example, that every time we `instantiate` (fancy term for "creating an instance of") a `SayHello` object we want to declare a default String, we could do that via an explicit constructor: 
 
 ```java
 public class SayHello{
@@ -148,6 +152,7 @@ public class SayHello{
     public SayHello(String defaultStr){
         default = defaultStr; 
     }
+
     // note that the implicit zero-arg constructor is always
     // available, unless we explicitly override it as below:
     public SayHello(){
@@ -172,12 +177,15 @@ public class SayHello{
 Now the "caller" (any code that creates an instance of `SayHello`) can choose to provide a default String upon creation, like so:
 
 ```java
-SayHello sh = new SayHello('My Default String');
-system.debug(sh.getDefault()); 
+SayHello sayHello = new SayHello('My Default String');
+system.debug(sayHello.getDefault()); 
 // prints 'My Default String' to the Apex debug log
 ```
 
-There are some other nice things you can do with constructors, such as overloading
+There are some other nice things you can do with constructors, such as overloading. To learn more check out the [Using Constructors](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_constructors.htm) page of the Apex Developer Guide.
+
+## Wrap up
+We tackled some meaty concepts this week, both fundamental and specific to developing on the Salesforce platform. If your head is spinning right now - don't sweat it. Practice makes perfect, and the best way to get the concepts to "stick" is to head on over to the [Week2 Apex Challenges](../psets/week2.md) and dive in. 
 
 ## Related Content
 
