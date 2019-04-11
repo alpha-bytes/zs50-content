@@ -13,45 +13,32 @@
 #   WRONG: "system.debug(' Expecting value \'x\' ');  
 
 # **REQUIRED** Each pset must correlate to one apex class, whose name is represented by apexName.
-apexName: SayHello
+apexName: Loopy
 
 # **OPTIONAL**
 # This value is used by the ZS50 command `ZS50 scaf <psetName>` to print out a scaffolded class structure / instructions for completing
-# the pset. It is recommended that scaffold values be YAML literal blocks. Literal blocks should not be enclosed in quotes. 
+# the pset. It is recommended that scaffold values be YAML literal blocks. 
 scaffold: |
-  public class SayHello {
+  public class Loopy {
 
-    public String sayHi(){
-      // TODO initialize a string with value 'Hello, World' 
-      // write it to Apex debug logs
-      // return it
-    }
+    // implement a public method modulo() that...
+    // 1. accepts as arguments two Integers (name them a and b, for simplicity)
+    // 2. using a loop, recursive function, or otherwise, return the modulo of a divided by b
+    //    e.g. modulo(412, 17) returns 4
 
-    // implement a public method sayMyName() that...
-    // returns a String with your name 
-
-    // implement a public method speak() that...
-    // 1. takes a single String as an argument
-    // 2. writes the argument to the debug log
-    // 3. returns the same string passed into the method, AFTER CONVERTING to lowercase (Hint - See String class https://sforce.co/2WwVY3S)
   }
 
 # **OPTIONAL**
 # Following are variables that get initialized in the global scope of the execute anonymous transaction.
 # They are NOT wrapped in a try/catch block. As such, it is recommended these either be initialized to null or a constant value.
 globalVars:
-  - "SayHello sayHello;"
-  - "String s;" 
-  - "String SPEAK_1 = 'Feel the power of ZS50...';"
-  - "String SPEAK_2 = 'These are not the Strings you seek...';"
-  - "String SPEAK_3;"
+  - "Loopy loopy;"
 
 # **OPTIONAL**
 # Prevalidation executions are wrapped in a try/catch block, and are helpful for any pre-processing steps required for validations.
 # steps. Often they will perform actions against global variables initialized above. 
 executePrevalidation: 
-  - "sayHello = new SayHello();"
-  - "SPEAK_3 = sayHello.sayMyName();"
+  - "loopy = new Loopy();"
 
 # **REQUIRED**
 # At least one validation is required per pset. Each validation is wrapped in its own try/catch block. Valid keys include: 
@@ -64,17 +51,8 @@ executePrevalidation:
 #    will be returned as the exception message.
 validations:
   
-  - execute: "s = sayHello.sayHi();"
-    evaluate: "'Hello, World'.equals(s);"
-    invMsg: "String.format('Expecting \\'Hello, World\\', received {0}', new List<Object>{ s });"
-  
-  - execute: "s = sayHello.sayMyName();"
-    evaluate: "s != null;"
-
-  - assert: "system.assertEquals(SPEAK_1.toLowerCase(), sayHello.speak(SPEAK_1));" 
-
-  - assert: "system.assertEquals(SPEAK_2.toLowerCase(), sayHello.speak(SPEAK_2));" 
-
-  - assert: "system.assertEquals(SPEAK_3.toLowerCase(), sayHello.speak(SPEAK_3));"
+  - assert: "system.assertEquals(loopy.modulo(4, 2), 0);"
+  - assert: "system.assertEquals(loopy.modulo(8, 3), 2);"
+  - assert: "system.assertEquals(loopy.modulo(679, 19), 14);"
 
 ...
