@@ -35,10 +35,11 @@ Smooth segue, no?
 ### Collections
 Collections, such as `Arrays` and `Lists`, are hugely important to the way code is written in Apex. Anyone who has worked through a programmatic Trailhead module for more than 5 minutes has heard the terms **bulkification** or **bulkified** at least 92 times, and there's a good reason for it: Salesforce needs operations to execute efficiently in order to ensure resource availability for all tenants on their platform. 
 
-#### Triggers and Trigger Context Variables
 In fact, there are several means by which Salesforce forces us to implement bulkified code. One of those approaches is through Apex Triggers and the [context variables](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers_context_variables.htm) Salesforce provides to us within a given trigger. 
 
-We're not going to explicitly cover writing an Apex Trigger here (though you may want to bone up on the [syntax](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers_syntax.htm) for the weekly Apex Challenge). Rather, what's important to discuss is that, depending on what event context your trigger is operating in (e.g. `before insert`, `after update`, etc.), many of the context variables available to you are collection types. 
+#### Triggers and Trigger Context Variables
+
+We're not going to explicitly cover writing an Apex Trigger here (though you may want to bone up on the [syntax](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers_syntax.htm) for the weekly Apex Challenge). Rather, what's important for our discussion is that, depending on what event context your trigger is operating in (e.g. `before insert`, `after update`, etc.), many of the context variables available to you are collections. 
 
 Let's explore one such variable: `Trigger.new`. This variable is available to all triggers defined for *insert*, *update* or *undelete* events. So what is it? `Trigger.new` is an ordered [List](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections_lists.htm) of all SObjects of the specified type that *a given User* has initiated a specific dml operation against. 
 
@@ -55,11 +56,11 @@ This trigger is going to "fire" every time a user attempts to insert one ore mor
 
 > Quick aside:
 >
-> Triggers can be defined to fire either before or after records are saved (but not committed) to the database, hence the `before` and `after` contexts for most dml events. There are some important [considerations](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers_context_variables_considerations.htm) when deciding which context to use. Getting familiar with Salesforce's save [order of execution](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers_order_of_execution.htm) is also highly recommended. 
+> Triggers can be written to fire either before or after records are saved (but not committed) to the database, hence the `before` and `after` contexts for most dml events. There are some important [considerations](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers_context_variables_considerations.htm) when deciding which context to use. Getting familiar with Salesforce's save [order of execution](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers_order_of_execution.htm) is also highly recommended. 
 > 
 > Onward.
 
-Now let's say one of your org's users has just mass-inserted 500 new Contacts using the Data Import Wizard (*note to self: remove user mass import permissions..*). Expanding the trigger we started above, what number is going to get written to the debug logs on line 6 below?  
+Now let's say one of your org's users has just mass-inserted 500 new Contacts using the Data Import Wizard (*note to self: remove users' mass import permissions..*). Expanding on the trigger we started above, what number will be written to the debug logs in the code below?  
 
 ```java
 trigger ContactTrigger on Contact (before insert){
@@ -71,28 +72,67 @@ trigger ContactTrigger on Contact (before insert){
 }
 ```
 
-If you said `500`, you're today's big winner! 
+If you said **500**, you're today's big winner! 
 
 ![winner](https://media.giphy.com/media/3ohhwGl5urKvvygu08/giphy.gif)
 
 #### Trigger Best Practices
-I would be remise to not mention a common - and *highly* recommended - best practice for writing Apex triggers. 
 
-TODO 
+Apex Triggers are a bit like `stored procedures` in many database management systems (DBMS) - they provide a means to execute a series of steps, a procedure, during the lifecycle of a database transaction. 
+
+What they lack, however, is features that make object-oriented programming so powerful. Things like `inheritance` and `abstraction`, for example. Those concepts can wait for another day so, for now, just remember the following: 
+
+> Apex Triggers should delegate their logic to an Apex **Class** for processing. 
+
+So, the implementation for our code above might look like the following: 
+
+```java
+
+// ContactTrigger.trigger file
+trigger ContactTrigger on Contact (before insert){
+    ContactDomain.doBeforeInsert(Trigger.new); 
+}
+
+
+// ContactDomain.cls file
+public class ContactDomain{
+
+    public static void doBeforeInsert(List<Contact> newContacts){
+        Integer counter = 0; 
+        for(Contact c : newContacts){
+            counter++; 
+        }
+        System.debug(counter);
+    }
+}
+```
+
+Right now you may asking yourself: *"what's that new `static` word doing in there?"*, and *"how were we able to call `ContactDomain.doBeforeInsert()` without first creating a new instance of `ContactDomain`?"*. Or maybe, *"why are we creating a class to do what we could write directly in the trigger? Isn't that just an additional step?!"*. 
+
+All good questions. Time for a ⚡️round. 
+
+1. Declaring a method as `static` allows it to be called without the need to first create an instance of its class. 
+2. See #1. 
+3. The power of delegating trigger logic to a handler class really comes into play when you start to implement - like we touched on above - OOP features like `abstraction`. You'll notice we named our handler class `ContactDomain`, which is a naming pattern used in orgs following some common architectural Apex patterns.
+
+> Quick aside...
+> 
+> Trailhead has two good modules on Apex Enterprise Patterns if you'd like to learn more. Links are provided in the *Related Content* section below.
+
+For now, if you remember nothing else from this section, remember: 
+> Trigger delegation. Just Do It. 
+
 
 #### Apex Collection Types
 
-TODO
+Lists are one of the collection data types available in Apex. The others being `Sets` and `Maps`. Check out the [Collections](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections.htm) page in the Apex developer guide for more info. Here are the primary characteristics to know for each: 
 
+|Collection Type| Primary Characteristic
+|--|--
+|List| Ordered collection of items. 
+|Set| Unordered collection of items, each of which *must be unique*
+|Map| Collection of mappings (think "rows") of unique `keys` to `values`
 
-```
-- types of collections (list, set, map)
-    - hashcode
-- triggers
-    - issues with triggers
-    - handler, best practice
-    - library reference (architecture) (sforce)
-```
 
 ### Sorting
 
@@ -185,16 +225,25 @@ system.debug(sayHello.getDefault());
 There are some other nice things you can do with constructors, such as overloading. To learn more check out the [Using Constructors](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_constructors.htm) page of the Apex Developer Guide.
 
 ## Wrap up
-We tackled some meaty concepts this week, both fundamental and specific to developing on the Salesforce platform. If your head is spinning right now - don't sweat it. Practice makes perfect, and the best way to get the concepts to "stick" is to head on over to the [Week2 Apex Challenges](../psets/week2.md) and dive in. 
+We tackled sa lot this week, both CS fundamentals and specific to developing on the Salesforce platform. If your head is spinning right now - don't sweat it. Practice makes perfect, and the best way to get the concepts to "stick" is to head on over to the [Week2 Apex Challenges](../psets/week2.md) and dive in. 
+
+But first, give yourself a big self-five for sticking it out this far. Exploring these concepts will make you a better Salesforce developer, general developer and problem-solver in general!  
+
+![lizLemonade](https://media.giphy.com/media/ujGfBmVppmgEg/giphy.gif)
 
 ## Related Content
 
 ### Read
-- [Apex Collection Types](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections.htm)
+- [Trailhead: Apex Domain and Selector Layers](https://trailhead.salesforce.com/en/content/learn/modules/apex_patterns_dsl)
+- [Trailhead: Apex Service Layer](https://trailhead.salesforce.com/en/content/learn/modules/apex_patterns_sl)
 
 ### Watch
+- [Financial Force DF'12 Session: Enterprise Design Patterns](https://docs.google.com/file/d/0B6brfGow3cD8UHhzWDF1WENEaXc/preview?pli=1)
 
 #### CS50 Shorts
 - [Arrays](https://www.youtube.com/embed/K1yC1xshF40?autoplay=1&rel=0)
 - [Algorithms Summary](https://www.youtube.com/embed/ktWL3nN38ZA?autoplay=1&rel=0)
 - [Merge Sort](https://www.youtube.com/embed/Ns7tGNbtvV4)
+
+### Code
+- [Financial Force DF'12 Apex Enterprise Patterns Repo](https://github.com/financialforcedev/df12-apex-enterprise-patterns)
