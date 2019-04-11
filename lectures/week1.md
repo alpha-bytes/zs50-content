@@ -1,17 +1,17 @@
-## Week 1: C (...and Apex)
+# Week 1: C (...and Apex)
 
-### CS50 Week 1: C
+## CS50 Week 1: C
 Use the links below to catchup on CS50's week1 content: 
 
 - [Lecture](https://www.youtube.com/watch?v=wEdvGqxafq8)
 - [Notes](https://cs50.harvard.edu/college/weeks/1/notes/)
 
-### ZS50 Week 1: Apex
+## ZS50 Week 1: Apex
 
-#### Geneology
+### Geneology
 In week 1 of CS50 we were introduced to `C`, a low-level general purpose programming language. Salesforce's proprietary `Apex` programming language, though *not* general purpose (it only compiles and runs on Salesforce servers), expresses many syntactical and idiomatic similarities. Apex's closest general purpose cousin is `Java`, an object-oriented language built in many ways as a successor to earlier languages like C and C++, so it makes sense that many of the early paradigms have persisted. You will find this reuse and resilience of paradigms to be a common feature of programming languages, generally, should you decide to explore others. 
 
-#### Core Concepts
+### Core Concepts
 According to the [Apex Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_intro_what_is_apex.htm), Apex is a: 
 > [...] **strongly typed**, **object-oriented** programming language that allows developers to execute **flow and transaction control statements** on Salesforce using syntax that looks like Java and acts like database stored procedures [...]
 
