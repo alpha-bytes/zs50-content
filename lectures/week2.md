@@ -43,7 +43,7 @@ We're not going to explicitly cover writing an Apex Trigger here (though you may
 
 Let's explore one such variable: `Trigger.new`. This variable is available to all triggers defined for *insert*, *update* or *undelete* events. So what is it? `Trigger.new` is an ordered [List](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections_lists.htm) of all SObjects of the specified type that *a given User* has initiated a specific dml operation against. 
 
-*Queue crickets...*
+*Queue crickets...* 🐛
 
 Okay, this one is probably best illustrated with an example. Say you've defined the following Contact trigger: 
 ```java
