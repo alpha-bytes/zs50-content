@@ -80,7 +80,7 @@ If you said **500**, you're today's big winner!
 
 Apex Triggers are a bit like `stored procedures` in many database management systems (DBMS) - they provide a means to execute a series of steps, a procedure, during the lifecycle of a database transaction. 
 
-What they lack, however, is features that make object-oriented programming so powerful. Things like `inheritance` and `abstraction`, for example. Those concepts can wait for another day so, for now, just remember the following: 
+What they lack, however, is features that make object-oriented programming so powerful. Things like `inheritance` and `abstraction`. Those concepts can wait for another day so, for now, just remember the following: 
 
 > Apex Triggers should delegate their logic to an Apex **Class** for processing. 
 
@@ -119,13 +119,12 @@ All good questions. Time for a ⚡️round.
 > 
 > Trailhead has two good modules on Apex Enterprise Patterns if you'd like to learn more. Links are provided in the *Related Content* section below.
 
-For now, if you remember nothing else from this section, remember: 
-> Trigger delegation. Just Do It. 
+For now, if you remember nothing else from this section, remember: **Trigger delegation. Just Do It.** 👍 
 
 
 #### Apex Collection Types
 
-Lists are one of the collection data types available in Apex. The others being `Sets` and `Maps`. Check out the [Collections](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections.htm) page in the Apex developer guide for more info. Here are the primary characteristics to know for each: 
+Lists are one of the collection data types available in Apex, the others being `Set` and `Map`. Check out the [Collections](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections.htm) page in the Apex developer guide for more info. Here are the primary characteristics to know for each: 
 
 |Collection Type| Primary Characteristic
 |--|--
@@ -142,11 +141,11 @@ However, one thing you might want to take a look at - or store in your mind's ba
 This is done through the `equals()` and `hashCode()` methods, which can be implemented on any custom type. Take a look at the documentation [here](developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections_maps_keys_userdefined.htm) to learn more. 
 
 ### Debugging
-CS50 week2 covered this topic a bit and we've glossed over it here to focus on more core concepts, but it's an important aspect of developing in Apex (or any language). The term `debugging` may sound like something you do after a jungle safari and, in a way, it's similar. It's the process of locating and removing bugs - unwanted behavior - from the code you write. 
+CS50 week2 covered this topic a bit and we've glossed over it here to focus on more core concepts, but it's an important aspect of developing in Apex (or any language). The term `debugging` may sound like something you do after hiking through the woods in a t-shirt and, in a way, it's similar. It's the process of locating and removing bugs - unwanted behavior - from the code you write. 
 
 There are various methods and tools you can utilize for debugging Apex code, some of which is covered in the [Debugging Apex](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_debugging.htm) section of the Apex Developer Guide. 
 
-For now, the tool you'll want in your toolbox is the `System.debug(String s)` method, which simply writes a provided String to the debug logs that get generated during a transaction. 
+For now, the tool you'll want in your toolbox is the `System.debug()` Apex method, which simply writes a provided String to the debug logs that get generated during a transaction. 
 
 ### Constructor Methods
 CS50's discussion this week didn't specifically cover constructor methods or, as they're more commonly referred to, just `constructors`, but it's an important part of writing code in object-oriented languages. 
