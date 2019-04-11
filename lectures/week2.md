@@ -135,14 +135,11 @@ Lists are one of the collection data types available in Apex. The others being `
 
 
 ### Sorting
+CS50 spent a lot of time this week on different sorting algorithms. While intellectually stimulating, we don't really need to worry about selecting the best sorting algorithm in Apex - the Salesforce runtime takes care of that for us. 
 
-TODO reference section
+However, one thing you might want to take a look at - or store in your mind's back pocket for later - is that we *can* tell Salesforce *what criteria to use* when sorting our custom types (e.g. Apex Classes we create). 
 
-```
-- implement in Apex?
-    - no, but can make more efficient 
-    - hashcode(), equals() [refdoc](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections_maps_keys_userdefined.htm)
-```
+This is done through the `equals()` and `hashCode()` methods, which can be implemented on any custom type. Take a look at the documentation [here](developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections_maps_keys_userdefined.htm) to learn more. 
 
 ### Debugging
 CS50 week2 covered this topic a bit and we've glossed over it here to focus on more core concepts, but it's an important aspect of developing in Apex (or any language). The term `debugging` may sound like something you do after a jungle safari and, in a way, it's similar. It's the process of locating and removing bugs - unwanted behavior - from the code you write. 
@@ -225,9 +222,9 @@ system.debug(sayHello.getDefault());
 There are some other nice things you can do with constructors, such as overloading. To learn more check out the [Using Constructors](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_constructors.htm) page of the Apex Developer Guide.
 
 ## Wrap up
-We tackled sa lot this week, both CS fundamentals and specific to developing on the Salesforce platform. If your head is spinning right now - don't sweat it. Practice makes perfect, and the best way to get the concepts to "stick" is to head on over to the [Week2 Apex Challenges](../psets/week2.md) and dive in. 
+We covered a lot this week, from fundamental CS concepts all the way to Apex trigger delegation. If your head is spinning right now - don't sweat it. Practice makes perfect, and the best way to get the concepts to "stick" is to head on over to the [Week2 Apex Challenges](../psets/week2.md) and dive in. 
 
-But first, give yourself a big self-five for sticking it out this far. Exploring these concepts will make you a better Salesforce developer, general developer and problem-solver in general!  
+But first, give yourself a big self-five for sticking it out this far. Exploring these concepts will make you a better Salesforce developer, general developer and problem-solver-in- general!  
 
 ![lizLemonade](https://media.giphy.com/media/ujGfBmVppmgEg/giphy.gif)
 
@@ -243,7 +240,6 @@ But first, give yourself a big self-five for sticking it out this far. Exploring
 #### CS50 Shorts
 - [Arrays](https://www.youtube.com/embed/K1yC1xshF40?autoplay=1&rel=0)
 - [Algorithms Summary](https://www.youtube.com/embed/ktWL3nN38ZA?autoplay=1&rel=0)
-- [Merge Sort](https://www.youtube.com/embed/Ns7tGNbtvV4)
 
 ### Code
 - [Financial Force DF'12 Apex Enterprise Patterns Repo](https://github.com/financialforcedev/df12-apex-enterprise-patterns)
