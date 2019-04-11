@@ -1,0 +1,58 @@
+---
+
+##########################
+## IMPLEMENTATION NOTES ##
+##########################
+# - Any values that will be used as Apex statements should be properly terminated with a semi-colon.
+# - It is recommended to enclose all values that will be used as Apex statements in double-quotes, especially  
+#   multi-line literal blocks, a la 'scaffold' values. This is especially true when working with Strings, as Apex 
+#   requires strings to be enclosed in single-quotes. 
+# - When escaping single quotes for Apex statements, if the statement is enclosed in double quotes remember to double escape, otherwise
+#   your YAML will not parse properly. Example:  
+#   RIGHT: "system.debug(' Expecting value \\'x\\' ');"
+#   WRONG: "system.debug(' Expecting value \'x\' ');  
+
+# **REQUIRED** Each pset must correlate to one apex class, whose name is represented by apexName.
+apexName: Loopy
+
+# **OPTIONAL**
+# This value is used by the ZS50 command `ZS50 scaf <psetName>` to print out a scaffolded class structure / instructions for completing
+# the pset. It is recommended that scaffold values be YAML literal blocks. 
+scaffold: |
+  public class Loopy {
+
+    // implement a public method modulo() that...
+    // 1. accepts as arguments two Integers (name them a and b, for simplicity)
+    // 2. using a loop, recursive function, or otherwise, return the modulo of a divided by b
+    //    e.g. modulo(412, 17) returns 4
+
+  }
+
+# **OPTIONAL**
+# Following are variables that get initialized in the global scope of the execute anonymous transaction.
+# They are NOT wrapped in a try/catch block. As such, it is recommended these either be initialized to null or a constant value.
+globalVars:
+  - "Loopy loopy;"
+
+# **OPTIONAL**
+# Prevalidation executions are wrapped in a try/catch block, and are helpful for any pre-processing steps required for validations.
+# steps. Often they will perform actions against global variables initialized above. 
+executePrevalidation: 
+  - "loopy = new Loopy();"
+
+# **REQUIRED**
+# At least one validation is required per pset. Each validation is wrapped in its own try/catch block. Valid keys include: 
+#  - assert: Required if 'evaluate' excluded or null. Any of the Apex system.Assert() variants. Note that if an assertion fails, an uncatchable
+#    System.Exception is thrown and returned to the caller. In these cases 'invMsg' is ignored.
+#  - evaluate: Required if assert excluded or null. Any statement that evaluates to a Boolean, where true indicates a passing assertion, and false a failing one. Note that
+#    the various Apex System.assert() variants may NOT be used here , as they do not evaluate to a Boolean and throw uncatchable exceptions. 
+#  - execute: (optional) steps to be completed prior to assertion. 
+#  - invMsg: (optional) If a custom exception message is desired, this value is any apex statement that evaluates to a single, valid String, which
+#    will be returned as the exception message.
+validations:
+  
+  - assert: "system.assertEquals(loopy.modulo(4, 2), 0);"
+  - assert: "system.assertEquals(loopy.modulo(8, 3), 2);"
+  - assert: "system.assertEquals(loopy.modulo(679, 19), 14);"
+
+...

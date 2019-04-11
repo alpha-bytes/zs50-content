@@ -1,0 +1,75 @@
+---
+
+##########################
+## IMPLEMENTATION NOTES ##
+##########################
+# - Any values that will be used as Apex statements should be properly terminated with a semi-colon.
+# - It is recommended to enclose all values that will be used as Apex statements in double-quotes, especially  
+#   multi-line literal blocks, a la 'scaffold' values. This is especially true when working with Strings, as Apex 
+#   requires strings to be enclosed in single-quotes. 
+# - When escaping single quotes for Apex statements, if the statement is enclosed in double quotes remember to double escape, otherwise
+#   your YAML will not parse properly. Example:  
+#   RIGHT: "system.debug(' Expecting value \\'x\\' ');"
+#   WRONG: "system.debug(' Expecting value \'x\' ');  
+
+# **REQUIRED** Each pset must correlate to one apex class, whose name is represented by apexName.
+apexName: LeadDomain
+
+# **OPTIONAL**
+# This value is used by the ZS50 command `ZS50 scaf <psetName>` to print out a scaffolded class structure / instructions for completing
+# the pset. It is recommended that scaffold values be YAML literal blocks. 
+scaffold: |
+  public class LeadDomain {
+
+    // set this instance variable in the constructor
+    List<Lead> leads;
+
+    // implement a constructor that...
+    // 1. Takes a List<Lead> as an argument
+    // 2. Sets the 'leads' instance variable to the list passed into the constructor
+
+    // implement a method doBeforeInsert() that...
+    // 1. Loops through each Lead in 'leads' and, for each
+    //    1a. Checks if the 'Company' field is blank and, if so, set the field to the Lead's firstName + ' ' + lastName
+    //        For this challenge, a blank field is considered one that is not just null, but an empty String. 
+    //        (Hint) Check out the String class in the apex developer guide. 
+    //        Example - A Lead with firstName='John' and lastName='Smith', and a blank company field value, should have the
+    //        company field set to 'John Smith'. 
+    //  2. Does not return a value (e.g. `void`)
+  }
+
+# **OPTIONAL**
+# Following are variables that get initialized in the global scope of the execute anonymous transaction.
+# They are NOT wrapped in a try/catch block. As such, it is recommended these either be initialized to null or a constant value.
+globalVars:
+  - "LeadDomain ld;"
+  - "List<Lead> leads;"
+
+# **OPTIONAL**
+# Prevalidation executions are wrapped in a try/catch block, and are helpful for any pre-processing steps required for validations.
+# steps. Often they will perform actions against global variables initialized above. 
+executePrevalidation: 
+  - |
+    Lead a = new Lead(firstName='Keyser',lastName='Soze');
+    Lead b = new Lead(firstName='Benny', lastName='Hanna', company='Treats'); 
+    Lead c = new Lead(firstName='Nulland', lastName='Void', company='');
+    leads = new List<Lead>{ a, b, c }; 
+    ld = new LeadDomain(leads);
+    ld.doBeforeInsert();
+
+# **REQUIRED**
+# At least one validation is required per pset. Each validation is wrapped in its own try/catch block. Valid keys include: 
+#  - assert: Required if 'evaluate' excluded or null. Any of the Apex system.Assert() variants. Note that if an assertion fails, an uncatchable
+#    System.Exception is thrown and returned to the caller. In these cases 'invMsg' is ignored.
+#  - evaluate: Required if assert excluded or null. Any statement that evaluates to a Boolean, where true indicates a passing assertion, and false a failing one. Note that
+#    the various Apex System.assert() variants may NOT be used here , as they do not evaluate to a Boolean and throw uncatchable exceptions. 
+#  - execute: (optional) steps to be completed prior to assertion. 
+#  - invMsg: (optional) If a custom exception message is desired, this value is any apex statement that evaluates to a single, valid String, which
+#    will be returned as the exception message.
+validations:
+  
+  - assert: "system.assertEquals('Keyser Soze', leads[0].company);"
+  - assert: "system.assertEquals('Treats', leads[1].company);"
+  - assert: "system.assertEquals('Nulland Void', leads[2].company);"
+
+...
