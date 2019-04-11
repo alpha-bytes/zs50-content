@@ -4,7 +4,7 @@ In the week 2 challenges, we'll tie together our general knowledge of collection
 Remember, make use of the `zs50 scaf <psetName>` command to help you get started!
 
 ## loopy
-Many languages have an operator for the arithmetic Modulus[https://en.wikipedia.org/wiki/Modulo_operation] operation. Apex? Not so much. 
+Many languages have an operator for the arithmetic [Modulus](https://en.wikipedia.org/wiki/Modulo_operation) operation. Apex? Not so much. 
 
 But that doesn't mean we can't implement it! For this challenge, you'll create a public class `Loopy` with a method `modulo` that...
 1. accepts as arguments two Integers (name them a and b, for simplicity)
