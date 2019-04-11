@@ -17,9 +17,9 @@ apexName: SayHello
 
 # **OPTIONAL**
 # This value is used by the ZS50 command `ZS50 scaf <psetName>` to print out a scaffolded class structure / instructions for completing
-# the pset. It is recommended that scaffold values be YAML literal blocks. 
+# the pset. It is recommended that scaffold values be YAML literal blocks. Literal blocks should not be enclosed in quotes. 
 scaffold: |
-  "public class SayHello {
+  public class SayHello {
 
     public String sayHi(){
       // TODO initialize a string with value 'Hello, World' 
@@ -32,11 +32,9 @@ scaffold: |
 
     // implement a public method speak() that...
     // 1. takes a single String as an argument
-    // 2. checks to make sure the string is not null 
-      // 2a: if it is, return a new String 'Invalid argument'
-      // 2b: else, returns the same string passed into the method, AFTER CONVERTING to lowercase (Hint: See String class: https://sforce.co/2WwVY3S)
-
-  }"
+    // 2. writes the argument to the debug log
+    // 3. returns the same string passed into the method, AFTER CONVERTING to lowercase (Hint - See String class https://sforce.co/2WwVY3S)
+  }
 
 # **OPTIONAL**
 # Following are variables that get initialized in the global scope of the execute anonymous transaction.
@@ -73,15 +71,10 @@ validations:
   - execute: "s = sayHello.sayMyName();"
     evaluate: "s != null;"
 
-  - assert: "system.assertEquals('Invalid argument', sayHello.speak(null));"
-
   - assert: "system.assertEquals(SPEAK_1.toLowerCase(), sayHello.speak(SPEAK_1));" 
 
   - assert: "system.assertEquals(SPEAK_2.toLowerCase(), sayHello.speak(SPEAK_2));" 
 
   - assert: "system.assertEquals(SPEAK_3.toLowerCase(), sayHello.speak(SPEAK_3));"
-     
-
-  
 
 ...
