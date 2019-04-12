@@ -138,7 +138,7 @@ CS50 spent a lot of time this week on different sorting algorithms. While intell
 
 However, one thing you might want to take a look at - or store in your mind's back pocket for later - is that we *can* tell Salesforce *what criteria to use* when sorting our custom types (e.g. Apex Classes we create). 
 
-This is done through the `equals()` and `hashCode()` methods, which can be implemented on any custom type. Take a look at the documentation [here](developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections_maps_keys_userdefined.htm) to learn more. 
+This is done through the `equals()` and `hashCode()` methods, which can be implemented on any custom type. Take a look at the documentation [here](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections_maps_keys_userdefined.htm) to learn more. 
 
 ### Debugging
 CS50 week2 covered this topic a bit and we've glossed over it here to focus on more core concepts, but it's an important aspect of developing in Apex (or any language). The term `debugging` may sound like something you do after hiking through the woods in a t-shirt and, in a way, it's similar. It's the process of locating and removing bugs - unwanted behavior - from the code you write. 
