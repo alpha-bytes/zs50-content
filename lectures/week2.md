@@ -136,7 +136,7 @@ Lists are one of the collection data types available in Apex, the others being `
 ### Sorting
 CS50 spent a lot of time this week on different sorting algorithms. While intellectually stimulating, we don't really need to worry about selecting the best sorting algorithm in Apex - the Salesforce runtime takes care of that for us. 
 
-However, one thing you might want to take a look at - or store in your mind's back pocket for later - is that we *can* tell Salesforce *what criteria to use* when sorting our custom types (e.g. Apex Classes we create). 
+However, one thing you might want to take a look at - or store in your mind's back pocket for later - is that we *can* tell Salesforce *what criteria to use* when sorting our custom types (e.g. Apex Classes we create).
 
 This is done through the `equals()` and `hashCode()` methods, which can be implemented on any custom type. Take a look at the documentation [here](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections_maps_keys_userdefined.htm) to learn more. 
 

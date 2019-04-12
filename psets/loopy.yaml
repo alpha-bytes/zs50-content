@@ -51,8 +51,8 @@ executePrevalidation:
 #    will be returned as the exception message.
 validations:
   
-  - assert: "system.assertEquals(loopy.modulo(4, 2), 0);"
-  - assert: "system.assertEquals(loopy.modulo(8, 3), 2);"
-  - assert: "system.assertEquals(loopy.modulo(679, 19), 14);"
+  - assert: "system.assertEquals(0, loopy.modulo(4, 2));"
+  - assert: "system.assertEquals(2, loopy.modulo(8, 3));"
+  - assert: "system.assertEquals(14, loopy.modulo(679, 19));"
 
 ...
