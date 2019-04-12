@@ -9,6 +9,14 @@ Use the links below to catchup on CS50's week3 content:
 ### ZS50 Week 3
 
 ```
+- CS50 Topics
+    - CS50 IDE
+    - Tools
+    - Strings
+    - Memory
+    - Memory layout
+    - Structs
+
 - pointers
   - pass-by-value versus pass-by-ref (or pass-by-copy-of-ref)
   - applicability to apex (link to doc)
