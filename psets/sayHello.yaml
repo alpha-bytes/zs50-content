@@ -12,8 +12,9 @@
 #   RIGHT: "system.debug(' Expecting value \\'x\\' ');"
 #   WRONG: "system.debug(' Expecting value \'x\' ');  
 
-# **REQUIRED** Each pset must correlate to one apex class, whose name is represented by apexName.
-apexName: SayHello
+# **REQUIRED** Each pset may utilize one or more apex classes. Class names are case-sensitive.
+apexClassNames: 
+  - SayHello
 
 # **OPTIONAL**
 # This value is used by the ZS50 command `ZS50 scaf <psetName>` to print out a scaffolded class structure / instructions for completing
