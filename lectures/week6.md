@@ -15,3 +15,6 @@ Use the links below to catchup on CS50's week6 content:
     - Data types in Python
     - Programming in Python
 ```
+
+### Why Learn Python
+- [StackOverflow - Python Popularity](https://insights.stackoverflow.com/survey/2019?utm_source=Iterable&utm_medium=email&utm_campaign=dev-survey-2019)
