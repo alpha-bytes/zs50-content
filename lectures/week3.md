@@ -8,27 +8,28 @@ Use the links below to catchup on CS50's week3 content:
 
 ### ZS50 Week 3
 
-```
-- CS50 Topics
-    - CS50 IDE
-    - Tools
-    - Strings
-    - Memory
-    - Memory layout
-    - Structs
+CS50 week3 took a deep-dive into memory, the place in a computer's hardware architecture where the magic of our programs' algorithms are stored, if only ephemerally. 
 
-- pointers
-  - pass-by-value versus pass-by-ref (or pass-by-copy-of-ref)
-  - applicability to apex (link to doc)
-  - example
+This week we'll apply many of those same concepts to developing on the Salesforce platform. 
 
-- heap
-  - execution limits
+### Memory in Salesforce
 
-- stack
-  - execution limits
+When writing Apex, we don't need to worry about low-level memory interactions like we do via `C`'s `malloc` (reserve memory) or `free` (give memory back) functions, but we are absolutely still bound by the same fundamental constraint: computing resources are finite. 
 
-- Structs
-  - what's the same in Apex? Anything non-primitive. 
-  - Anything non-primitive also gets passed-by-ref
-```
+#### Limitations
+
+In week2 we touched on some of the issues you might encounter relative to this constraint. 
+
+- heap 
+- stack (frames)
+- cpu time
+- link to apex governors
+
+### Passing Variables in Apex
+
+#### Pass by Copy
+
+#### Pass by Reference (sort of)
+
+- reference 'swap' from cs50
+- [Dev Blog](https://developer.salesforce.com/blogs/developer-relations/2012/05/passing-parameters-by-reference-and-by-value-in-apex.html)
