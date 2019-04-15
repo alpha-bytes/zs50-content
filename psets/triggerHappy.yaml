@@ -13,7 +13,8 @@
 #   WRONG: "system.debug(' Expecting value \'x\' ');  
 
 # **REQUIRED** Each pset may utilize one or more apex classes. Class names are case-sensitive.
-apexClassNames: LeadDomain
+apexClassNames: 
+  - LeadDomain
 
 # **OPTIONAL**
 # This value is used by the ZS50 command `ZS50 scaf <psetName>` to print out a scaffolded class structure / instructions for completing
