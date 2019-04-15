@@ -34,6 +34,9 @@ In week2 we touched on some of the issues you might encounter relative to this c
 - reference 'swap' from cs50
 - [Dev Blog](https://developer.salesforce.com/blogs/developer-relations/2012/05/passing-parameters-by-reference-and-by-value-in-apex.html)
 
+> Aside: 
+> `Side Effect`. Certain programming paradigms - Functional programming - aim to avoid. Vars `immutable` after assignment. OOP embraces.
+
 ## Related Content
 
 ### Read
