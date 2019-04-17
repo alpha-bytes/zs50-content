@@ -15,8 +15,8 @@ In week2's **triggerHappy** challenge, your LeadDomain.doBeforeInsert() method c
 Note: You won't need to actually integrate with a web service in this challenge. That part is simulated -- you'll just need to handle the method calls inside of Salesforce. 
 
 To successfully complete this challenge: 
-1. Leave your existing logic from `LeadDomain.doBeforeInsert()` in place. That is, Leads whose Company field is null should still be set to firstName + ' ' + lastName. 
-2. For those Leads that do have a non-null company value, add them to a new List. 
+1. Leave your existing logic from `LeadDomain.doBeforeInsert()` in place. That is, Leads whose Company field is *blank* should still be set to firstName + ' ' + lastName. 
+2. For those Leads that have a non-blank Company value, add them to a new List. 
 3. Create a new class called `LeadEnrichmentService` and a `static` method `enrich()` which accepts as its sole argument a list of Leads. Pass the list created in *step (2)* to this method. This method should return no value (e.g. use `void` in the method signature).
 4. `LeadEnrichmentService.enrich()` will simulate a call to a third-party web service by passing a Set of strings - the Company values from each Lead record passed to it - to `HttpEnrichmentService.enrich()`. You don't need to create or implement this class / method - it's done for you as part of the validation. Remember to use the ZS50 CLI's `scaf` command to make life *much* easier.
 5. You *do*, however, need to instantiate a Set, and iterate through the list of Leads to add each Company value to it.
