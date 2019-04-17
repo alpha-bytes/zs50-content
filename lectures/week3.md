@@ -45,7 +45,7 @@ In week2 we touched on some of the issues you might encounter relative to this c
 
 #### CS50 Shorts
 
-- [Call Stakcs](https://www.youtube.com/embed/aCPkszeKRa4?autoplay=1&rel=0)
+- [Call Stacks](https://www.youtube.com/embed/aCPkszeKRa4?autoplay=1&rel=0)
 - [Dynamic Memory Allocation](https://www.youtube.com/embed/xa4ugmMDhiE?autoplay=1&rel=0)
 - [File Pointers](https://www.youtube.com/embed/bOF-SpEAYgk?autoplay=1&rel=0)
 - [Hexadecimal](https://www.youtube.com/embed/u_atXp-NF6w?autoplay=1&rel=0)
