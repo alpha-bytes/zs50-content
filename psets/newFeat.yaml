@@ -1,0 +1,119 @@
+---
+
+##########################
+## IMPLEMENTATION NOTES ##
+##########################
+# - Any values that will be used as Apex statements should be properly terminated with a semi-colon.
+# - It is recommended to enclose all values that will be used as Apex statements in double-quotes, especially  
+#   multi-line literal blocks, a la 'scaffold' values. This is especially true when working with Strings, as Apex 
+#   requires strings to be enclosed in single-quotes. 
+# - When escaping single quotes for Apex statements, if the statement is enclosed in double quotes remember to double escape, otherwise
+#   your YAML will not parse properly. Example:  
+#   RIGHT: "system.debug(' Expecting value \\'x\\' ');"
+#   WRONG: "system.debug(' Expecting value \'x\' ');  
+# - Anonymous Apex is used to execute the validations, which entails some limitations: 
+#   - Because the execute anonymous framework acts as a top-level wrapper class around the declared body, 
+#     any classes you specify will exist as inner classes to the context wrapper. 
+#   - Inner classes in Apex have some restrictive limitations, specifically around usage of STATIC methods
+#     (see https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_java_diffs.htm  and 
+#     https://www.javatpoint.com/static-nested-class for more info)
+#     - To get around this restriction, and allow the *appearance* of the ability to declare static methods in your classes, the zs50
+#       CLI will search your classes for instances of the `static` keyword and, where found:
+#         1. instantiate a new instance of the class in which the static method exists, 
+#         2. assign the instance to a static variable in the global scope, which has the same name as the class
+#         3. remove the static keyword from the method signature, so the anonymous apex compiles     
+#     - This has the effect of immitating a call to a static class method. You should take caution when designing validations
+#       utilizing static methods, to ensure no other instances of the class might shadow the variable existing in the global scope. You also
+#       need to ensure that the default zero-arg constructor is available for any classes containing a static method. 
+#     - There is currently no support for static class variables.  
+
+# **REQUIRED** Each pset may utilize one or more apex classes. Class names are case-sensitive.
+apexClassNames: 
+  - LeadDomain
+  - LeadEnrichmentService
+
+# **OPTIONAL**
+# This value is used by the ZS50 command `ZS50 scaf <psetName>` to print out a scaffolded class structure / instructions for completing
+# the pset. It is recommended that scaffold values be YAML literal blocks. 
+scaffold: |
+  public class LeadDomain {
+    // update the class you implemented in week2
+    // In your existing doBeforeInsert() method...
+    //  1. Initialize an empty List of Leads
+    //  2. For each Lead in the 'leads' instance variable, if the Lead.Company field is NOT blank, add it to the list
+    //    * HINT - null and blank are not always the same thing. You may want to use the String.isBlank() method ;) 
+    //  3. Pass the list to LeadEnrichmentService.enrich() (see below)
+  }
+
+  public class LeadEnrichmentService{
+    // The enrich() method has been scaffolded for you. Make the following edits so it conforms to requirements...
+    // 1. Edit the method signature so that it can be called without instantiating an instance of LeadEnrichmentService
+    // 2. Implement the logic indicated by the comments within the enrich() method
+    
+    public void enrich(List<Lead> leads){
+      // a. initialize and populate a Set of Strings with each unique value from the leads' Company fields
+      // b. pass this Set as the sole argument to the method below
+      Map<String, String> companyToIndustry = HttpEnrichmentService.enrich(// your Set here); 
+      // iterate through each of the Leads in the 'leads' argument, and set its Industry field to the appropriate value from 'companyToIndustry'
+    }
+  }
+
+# **OPTIONAL**
+# When true, database transactions occurring during validations will be commited to the authorized org if the transaction completes without exception. 
+# When false, validation will instantiate a Database Savepoint prior to any operations, and rollback all operations at the conclusion of 
+# validations. When ommitted, defaults to false. 
+commitDml: false
+
+# **OPTIONAL**
+# Following are variables that get initialized in the global scope of the execute anonymous transaction.
+# They are NOT wrapped in a try/catch block and, as such, should be used with caution. 
+globalVars: 
+  - |
+    public class HttpEnrichmentService{
+        public Map<String, String> enrich(Set<String> companies){
+          return new Map<String, String>{
+            'Wok and Roll' => 'Accommodation and Food Services', 
+            'Schwing America' => 'Manufacturing', 
+            'Frying Nemo' => 'Agriculture, Forestry, Fishing and Hunting'
+          };
+        }
+    }
+  # will mimic a static method call by shadowing the class name
+  - "static HttpEnrichmentService HttpEnrichmentService = new HttpEnrichmentService();"
+  - "LeadDomain ld;" 
+  - "List<Lead> leads;"
+
+# **OPTIONAL**
+# Prevalidation executions are wrapped in a try/catch block, and are helpful for any pre-processing steps required for validations.
+# steps. Often they will perform actions against global variables initialized above. 
+executePrevalidation: 
+  - |
+    Lead a = new Lead(firstName='Keyser',lastName='Soze');
+    Lead b = new Lead(firstName='Benny', lastName='Hanna', company='Treats'); 
+    Lead c = new Lead(firstName='Nulland', lastName='Void', company='');
+    Lead d = new Lead(firstName='Steven', lastName='Fryler', company='Wok and Roll'); 
+    Lead e = new Lead(firstName='Garth', lastName='Algar', company='Schwing America'); 
+    Lead f = new Lead(firstName='Nemo', lastName='Run!', company='Frying Nemo'); 
+    leads = new List<Lead>{ a, b, c, d, e, f }; 
+    ld = new LeadDomain(leads);
+    ld.doBeforeInsert();
+
+# **REQUIRED**
+# At least one validation is required per pset. Each validation is wrapped in its own try/catch block. Valid keys include: 
+#  - assert: Required if 'evaluate' excluded or null. Any of the Apex system.Assert() variants. Note that if an assertion fails, an uncatchable
+#    System.Exception is thrown and returned to the caller. In these cases 'invMsg' is ignored.
+#  - evaluate: Required if assert excluded or null. Any statement that evaluates to a Boolean, where true indicates a passing assertion, and false a failing one. Note that
+#    the various Apex System.assert() variants may NOT be used here , as they do not evaluate to a Boolean and throw uncatchable exceptions. 
+#  - execute: (optional) steps to be completed prior to assertion. 
+#  - invMsg: (optional) If a custom exception message is desired, this value is any apex statement that evaluates to a single, valid String, which
+#    will be returned as the exception message.
+validations:
+  
+  - assert: "system.assertEquals('Keyser Soze', leads[0].company);"
+  - assert: "system.assertEquals('Treats', leads[1].company);"
+  - assert: "system.assertEquals('Nulland Void', leads[2].company);"
+  - assert: "system.assertEquals('Accommodation and Food Services', leads[3].Industry);"
+  - assert: "system.assertEquals('Manufacturing', leads[4].Industry);"
+  - assert: "system.assertEquals('Agriculture, Forestry, Fishing and Hunting', leads[5].Industry);"
+
+...
