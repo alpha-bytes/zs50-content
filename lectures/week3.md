@@ -12,9 +12,9 @@ CS50 week3 took a deep-dive into memory, the place in a computer's hardware arch
 
 ### Memory in Salesforce
 
-When writing Apex, we don't need to worry about low-level memory interactions like we do in `C` via `malloc()` (reserve memory) or `free()` (give memory back) functions. We are bound, however, by the same maxim: the computing resources available to us are finite. 
+When writing Apex, we don't need to worry about low-level memory interactions like we do in `C` via `malloc()` (reserve memory) or `free()` (give memory back). We are bound, however, by the same maxim: the computing resources available to us are finite. 
 
-CS50's discussion covered the concepts of memory `stack` and `heap` and - no surprise - those are at play in the Salesforce runtime as well. In fact, although we have much more limited access to the actual memory running our Salesforce code, there are a couple places where we can see the artifacts of their presence at play.
+CS50's discussion covered the concepts of memory `stack` and `heap` and - no surprise - those are at play in the Salesforce runtime as well. In fact, although we have much more limited access to the actual memory running our Salesforce code, there are places where we can see the artifacts of their presence at play.
 
 #### The `Stack` in Apex
 
@@ -98,20 +98,123 @@ Knee-slapper, right?! 🙄 Actually, the rules for where memory is allocated can
 #### The `Heap` in Apex
 *So objects are stored on the heap, you say? That's fine-and-dandy, but what's it mean for me as a developer?* 
 
-Glad you asked!
+Glad you asked and, actually, quite a lot! An object stored in the heap is accessible to any function (and, technically, `thread`, but we don't need to worry too much about those in Apex) which knows its memory address. And how might we pass a memory address around, again? 
 
+`Pointers`, of course. 
+
+Luckily for us, working with pointers in Apex isn't nearly as painful as it is in C. In fact, from a syntax perspective, we don't need to do anything special to harness them. In the following section, we'll look at some simple examples that demonstrate the power of pointers in our code. 
 
 ### Passing Variables in Apex
+Like Java, all Apex variables are passed between functions `by copy of value`. This is true for both primitives and objects.
 
-#### Pass by Copy
+#### Passing Primitives
 
-#### Pass by Reference (sort of)
+Before jumping into pointers, let's first convince ourselves that Apex indeed passes *copies* of variables between functions. Consider the following:
 
-- reference 'swap' from cs50
-- [Dev Blog](https://developer.salesforce.com/blogs/developer-relations/2012/05/passing-parameters-by-reference-and-by-value-in-apex.html)
+```java
+public class IntPrinter{
 
-> Aside: 
-> `Side Effect`. Certain programming paradigms - Functional programming - aim to avoid. Vars `immutable` after assignment. OOP embraces.
+    Integer instanceInt = 3; 
+
+    public void printInt(){
+        Incrementer.increment(instanceInt); 
+        system.debug(instanceInt);
+    }
+
+}
+
+public class Incrementer{
+
+    public static void increment(Integer x){
+        x++; 
+    }
+}
+```
+
+Given that Apex passes variables by copy of value, what will calling the following code print to the debug logs?
+
+```java
+IntPrinter ip = new IntPrinter(); 
+ip.printInt(); 
+```
+
+Hopefully you said **3**. Why does this happen? Because when you pass `instanceInt` from the `printInt()` method to the `Incrementer.increment()` method, the latter is receiving a *copy* of `instanceInt`'s value, an integer equal to **3**. It then increments the copy but, since the method returns no value, the changes are erased from memory as soon as the method completes. 
+
+#### Passing Objects
+
+Okay so, really, everything we've covered so far has been leading up to this. 
+
+![anticipation](https://media.giphy.com/media/KekSpdgEffjvW/giphy.gif)
+
+Let's look at an example where we pass a complex data type, an Account [`SObject`](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_methods_system_sobject.htm): 
+
+```java
+public class AccountDomain{
+
+    public static void enrichAccount(Account acct){
+        // let's say this code reaches out to a 3rd party web service
+        // to get industry data about this account, based on name. The 
+        // web service returns a Map of standardized attributes about the
+        // account, including its 'naicsCode' 
+        Map<String, String> accountAttributes = SomeWebService.getAttributes(acct); 
+        // now that we've got the data, we'll update what we're interested in
+        acct.NaicsCode = accountAttributes.get('naicsCode'); 
+    }
+
+}
+```
+
+Now let's examine what will write to the debug logs after executing the following code. Let's assume Apple's naics code is 35719904. 
+
+```java
+Account a = new Account(name='Apple Inc.'); 
+system.debug(a.NaicsCode); // prints null
+AccountDomain.enrichAccount(a); 
+system.debug(a.NaicsCode); // prints 35719904
+```
+
+*But WHY did that work? Didn't you just say that all variables are passed by **copy** in Apex?? Shouldn't `a` be unaffected by what happens in `AccountDomain.enrichAccount()`, because it only receives a copy of `a`?* 
+
+Rest assured there's no slight-of-hand here. The code above is still passing variables by copy. But *what* is being passed is just less obvious because it's happening behind-the-scenes without the need for any special syntax. What's actually being passed to `AccountDomain.enrichAccount()` is the **pointer** to the Account `a`. 
+
+Let's take this line-by-line: 
+```java
+Account a = new Account(name='Apple Inc.');
+// to the RIGHT side of =, we provision memory for a new Account on the heap
+// to the LEFT side of =, we declare a variable `a`, to which the address in heap where the Account object is stored gets assigned
+```
+
+So, "under the hood", what *actually* gets assigned to the variable `a` is a memory address, such as '`0x64521e08`'. In fact, this is the exact value where our Account was stored in memory when running this code at the time of writing. 
+
+> Quick Aside
+> 
+> If that memory syntax feels familiar, it should. It's in hexadecimal format, like we saw in the CS50 lecture.
+
+So, in line 2 when we run...
+
+```java
+system.debug(a.NaicsCode); 
+```
+
+What we're actually telling the computer is: `go to the location stored in a, and from the object stored there, get the value of its 'NaicsCode' field`. 
+
+You probably see where we're going from here, huh? So in line 3 we pass `a` - and remember, Apex is passing a **copy**, literally the value '`0x64521e08`' - to `AccountDomain.enrichAccount()`, which is then able to access that same object in the heap and make changes to it. 
+
+Thusly, an object initialized in one method (stack frame) can be acted upon in a subsequent method (another frame), and the changes will be reflected anywhere that object can be accessed. 
+
+If this is all starting to make your head spin right now - that's okay! These are some heavy concepts. But rest-assured that, once you've wrapped your mind around them, the knowledge will make you a much stronger developer and your code more efficient and scalable. 
+
+## Wrap Up
+Whew. If last week felt like a lot, it probably feels like week3 dumped a HEAP of new information on you. 😜
+
+So, for the sake of our sanity, let's boil this week's concepts down to some digestible takeaways:
+
+> 1. **Primitives** and **pointers** live on the `stack`
+> 2. **Objects** live on the `heap`
+> 3. Any code with access to an object's `address` can access and alter it. 
+> 4. All variables are `passed by copy`
+
+
 
 ## Related Content
 
@@ -120,6 +223,7 @@ Glad you asked!
 - [Apex Transaction Limits](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_gov_limits.htm)
 - [Testing in Apex](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_testing.htm)
 - [Java Heap vs Stack Memory Allocation](https://www.journaldev.com/4098/java-heap-space-vs-stack-memory)
+- [Salesforce Help: 'Heap Size Too Large' Example](https://help.salesforce.com/articleView?id=000004186&type=1)
 
 ### Watch
 
@@ -129,5 +233,3 @@ Glad you asked!
 - [Pointers](https://www.youtube.com/embed/XISnO2YhnsY?autoplay=1&rel=0)
 - [Dynamic Memory Allocation](https://www.youtube.com/embed/xa4ugmMDhiE?autoplay=1&rel=0)
 - [Recursion](https://www.youtube.com/embed/mz6tAJMVmfM?autoplay=1&rel=0)
-
-### Code
