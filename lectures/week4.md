@@ -8,13 +8,29 @@ Use the links below to catchup on CS50's week3 content:
 
 ### ZS50 Week 4
 
-```
-- CS50 Topics
-    - Tools for debugging
-    - valgrind
-    - Rubber duck debugging
-    - More from last week
-    - Structs
-    - Linked Lists
-    - More data structures
-```
+#### Memory Leaks in SF
+Nothing to see here! Skip to [00:21:40](https://www.youtube.com/watch?v=ed2lnJNf7HU&t=1300s)
+
+#### Array and Linked List
+In Apex, don't need to declare any collection (array, List, Set, Map) size in advance. All dynamically add memory as necessary. 
+
+#### Structs vs. Classes
+
+#### Hashes
+- Indexed fields in SF
+- How can we implement own hash table in SF? 
+    - `Map<Object, List<Object>>`
+
+#### The Forest for the Trees (and Tries!)
+⏱ [01:50:35](https://youtu.be/ed2lnJNf7HU?t=6635)
+
+## Related Content
+
+### Read
+
+### Watch
+
+#### CS50 Shorts
+
+- [Data Structures](https://www.youtube.com/embed/3uGchQbk7g8?autoplay=1&rel=0)
+- [Hash Tables](https://www.youtube.com/embed/nvzVHwrrub0?autoplay=1&rel=0)
