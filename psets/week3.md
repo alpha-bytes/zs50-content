@@ -6,7 +6,7 @@ Did you successfully complete last week's **triggerHappy** challenge? If not, he
 
 ## newFeat
 
-So much of the time in Apex development (and dev in general), you'll be re-writing code you or someone else implemented in the past. It may be because a bug has been discovered, there's a more efficient or practical means of implementing the same behavior (called `refactoring`, which we'll get to in another challenge), or because new requirements have arisen. In this challenge, we'll update our code to the the latter. 
+So much of the time in Apex development (and dev in general), you'll be re-writing code you or someone else implemented in the past. It may be because a bug has been discovered, there's a more efficient or practical means of implementing the same behavior (called `refactoring`, which we'll get to in another challenge), or because new requirements have arisen. In this challenge, we'll update our code due to the latter. 
 
 In week2's **triggerHappy** challenge, your LeadDomain.doBeforeInsert() method checked each Lead for a null `Company` field value and inserted the Lead's first and last name for each. In this challenge, we'll take things a step further by adding the following requirement: 
 
