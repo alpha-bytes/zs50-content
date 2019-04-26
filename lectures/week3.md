@@ -223,6 +223,7 @@ So, for the sake of our sanity, let's boil this week's concepts down to some dig
 - [Apex Transaction Limits](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_gov_limits.htm)
 - [Testing in Apex](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_testing.htm)
 - [Java Heap vs Stack Memory Allocation](https://www.journaldev.com/4098/java-heap-space-vs-stack-memory)
+- [Visualizing Pass-by-Value vs. Pass-By-Reference](https://www.mathwarehouse.com/programming/passing-by-value-vs-by-reference-visual-explanation.php)
 - [Salesforce Help: 'Heap Size Too Large' Example](https://help.salesforce.com/articleView?id=000004186&type=1)
 
 ### Watch
