@@ -17,6 +17,10 @@ In Apex, don't need to declare any collection (array, List, Set, Map) size in ad
 #### Structs vs. Classes
 
 #### Hashes
+What is a hash or, more appropriately, a `hash function`? Anything that can map data of an arbitrary length (x) to data of a fixed length (y), such that any unique input *x* results in a unique output *y*.
+
+Where used in SF? Think implementation of `sosl`.
+
 - Indexed fields in SF
 - How can we implement own hash table in SF? 
     - `Map<Object, List<Object>>`
