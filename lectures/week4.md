@@ -44,7 +44,7 @@ Let's take a look at some of the common namespaces and classes you'll use in you
 #### System Namespace
 The System namespace contains some core functionality for working in Apex, including many of the "primitive" data types we've used in previous weeks such as String. 
 
-> Aside: 
+> Aside: TODO note on primitives
 
 
 
