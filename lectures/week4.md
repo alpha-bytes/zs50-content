@@ -46,7 +46,7 @@ Let's take a look at some of the common namespaces and classes you'll use in you
 
 The System namespace contains core functionality for working in Apex, several of which are described in more detail below. 
 
-**`Primitive Wrapper` classes**
+**Primitive Wrapper classes**
 
 So, it turns out we've sort of fudged usage of the word "primitive" in prior weeks when referring to Apex primitive data types Although, the Salesforce docs use the same terminology so we get a pass 🙉. 
 
@@ -142,12 +142,47 @@ try{
 >
 > Whew. Now back to our regularly-scheduled programming.
 
+**`JSON` class**
 
+If you're writing any code that interacts with third-party web APIs, odds are they're going to return data in [json](format). Use this class to convert json strings to and from Apex data types. If you're working with Lightning Components, this is a must-have class.
 
+**HTTP classes**
+
+Utility classes for working with third-party web services reside here, as well, including the `Http`, `HttpRequest`, and `HttpResponse` classes.
+
+If you want to *write* classes to act as handlers for requests inbound to your Salesforce org (read: create a custom Apex REST api) you'll want to check out the `RestContext`, `RestRequest`, and `RestResponse` classes.
+
+**Collections classes**
+
+You'll notice that `List`, `Map` and `Set` classes live in the System namespace. 
+
+**`Schema` class**
+
+The Schema class provides an important interface for accessing information about the org's object and field metadata using `Schema.getGlobalDescribe()`. For access to metadata about a specific SObject, see the `Schema` namespace below. 
+
+**`SObject` class**
+
+This is the superclass for all SObjects. It provides methods for dynamically accessing (`get()`) and setting (`put()`) an SObject's field values; adding custom errors to prevent dml operations against it (`addError()`); creating a cloned copy in memory (via `clone()`); and more. 
+
+**`Test` class**
+
+Unit testing the Apex classes you create is of tremendous import for ensuring the functionality and stability of your org. This class provides important methods for effecting unit tests, including `startTest()` / `stopTest()` for testing asynchronous processes, `loadData()` for data creation from a static resource, and others.
+
+**`UserInfo` class**
+
+The UserInfo class provides pertinent information regarding the runtime context user (user who initiated the current process), via methods including `getUserId()`, `getProfileId()`, and others.
+
+#### [Schema Namespace](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_namespace_Schema.htm)
+
+The Schema namespace houses an important collection of classes for dynamically access metadata about specific SObject data types. Probably the most common usage is accessing speicific types via the dot (.) notator, such as `Schema.Account.sObjectType` or `Schema.My_Custom_Object__c.getSObjectType()`, both of which return an instance of the `SObjectType` class for the specified type. 
+
+See [Using the Schema Namespace](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_schema_namespace_using.htm) for more examples. 
 
 
 ### Inheritance
+We used the terms `abstract` and `superclass` to refer to several Apex data types above. So what is that all about, and what's this new term `inheritance`? 
 
+#### Casting
 
 #### SOLID
 
