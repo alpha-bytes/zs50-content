@@ -46,7 +46,7 @@ Let's take a look at some of the common namespaces and classes you'll use in you
 
 The System namespace contains core functionality for working in Apex, several of which are described in more detail below. 
 
-**Primitive Wrapper classes**
+##### **Primitive Wrapper classes**
 
 So, it turns out we've sort of fudged usage of the word "primitive" in prior weeks when referring to Apex primitive data types Although, the Salesforce docs use the same terminology so we get a pass 🙉. 
 
@@ -67,13 +67,13 @@ Your logs should look similar to the following:
 
 Now that our heap/stack 🎈 has been sufficiently burst, let's move on to discusing some other classes you'll use frequently in Apex development. 
 
-**`Database` class**
+##### **`Database` class**
 
 The Database class is used for manipulating data - i.e. inserting, updating, and deleting records. You'll also find methods for common operations such as converting leads, merging duplicates, and dynamic querying. 
 
 For many common operations you can also use DML statements such as `insert`, `update`, `upsert`, etc. rather than Database class methods. The Apex Developer Guide has a section devoted to [deciding when to use each](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_dml_database.htm).
 
-**`Exception` class**
+##### **`Exception` class**
 
 It's great to be exceptional, right? Well, not so much in programming. An exception occurs when something goes wrong in your code at runtime (i.e. not a syntax or compilation problem, but something that's encountered during execution). 
 
@@ -142,33 +142,33 @@ try{
 >
 > Whew. Now back to our regularly-scheduled programming.
 
-**`JSON` class**
+##### **`JSON` class**
 
 If you're writing any code that interacts with third-party web APIs, odds are they're going to return data in [json](format). Use this class to convert json strings to and from Apex data types. If you're working with Lightning Components, this is a must-have class.
 
-**HTTP classes**
+##### **HTTP classes**
 
 Utility classes for working with third-party web services reside here, as well, including the `Http`, `HttpRequest`, and `HttpResponse` classes.
 
 If you want to *write* classes to act as handlers for requests inbound to your Salesforce org (read: create a custom Apex REST api) you'll want to check out the `RestContext`, `RestRequest`, and `RestResponse` classes.
 
-**Collections classes**
+##### **Collections classes**
 
 You'll notice that `List`, `Map` and `Set` classes live in the System namespace. 
 
-**`Schema` class**
+##### **`Schema` class**
 
 The Schema class provides an important interface for accessing information about the org's object and field metadata using `Schema.getGlobalDescribe()`. For access to metadata about a specific SObject, see the `Schema` namespace below. 
 
-**`SObject` class** <a name="sobjectClass"></a>
+##### **`SObject` class** <a name="sobjectClass"></a>
 
 This is the superclass for all SObjects. It provides methods for dynamically accessing (`get()`) and setting (`put()`) an SObject's field values; adding custom errors to prevent dml operations against it (`addError()`); creating a cloned copy in memory (via `clone()`); and more. 
 
-**`Test` class**
+##### **`Test` class**
 
 Unit testing the Apex classes you create is of tremendous import for ensuring the functionality and stability of your org. This class provides important methods for effecting unit tests, including `startTest()` / `stopTest()` for testing asynchronous processes, `loadData()` for data creation from a static resource, and others.
 
-**`UserInfo` class**
+##### **`UserInfo` class**
 
 The UserInfo class provides pertinent information regarding the runtime context user (user who initiated the current process), via methods including `getUserId()`, `getProfileId()`, and others.
 
@@ -237,7 +237,9 @@ public class AccountDomain extends SObjectDomain{
     /*
      * Remember when we said that the term `superclass` is a good
      * syntax reminder? Here we see why, as we call super() to  
-     * utilize constructors defined by the superclass.
+     * utilize constructors defined by the superclass. In fact, 
+     * we can use `super` to access variables and implemented 
+     * methods in SObjectDomain, too. 
      */
     public AccountDomain(List<Account> accounts){
         super(accounts); 
@@ -355,16 +357,76 @@ For once, there's a nice, simple answer: you can't. Well, at least not with abst
 
 What you **can** do, however, is `implement` any number of `interfaces`. So what's an interface, and how is it different from an abstract class? 
 
+You can think of an interface as the purest form of an abstract class: there can be **no** provided implementation. In other words, you define the methods that subclasses must implement and nothing else: 
 
+```java
+public interface IValidateSObjectFields{
 
+    Boolean fieldsAreValid(SObject sobj); 
+
+}
+```
+
+Notice the following our interface definition: 
+1. We replace "class" with "interface" in the class signature
+2. Method signatures do not use access modifiers (like public or private) and do not require the `abstract` modifier
+3. Methods are terminated with a semi-colon (like abstract methods)
+4. The interface name begins with **I**, as in "I do this" or "I do that". This isn't a requirement but is a common naming convention for differentiation classes from interfaces. 
+
+So, now the AccountDomain class we defined earlier can have multiple inheritance by `implementing` the IValidateSObjectFields interface:  
+
+```java
+public class AccountDomain extends SObjectDomain implements IValidateSObjectFields {
+
+    // ... other code
+
+    // IValidateSObjectFields implementation
+    public Boolean fieldsAreValid(SObject sobj){
+        Boolean isTrue; 
+        // some logic that sets isTrue based on Account field validation
+        return isTrue; 
+    }
+
+    // ... other code
+}
+```
+
+Note that we did not need to use the `override` keyword in our AccountDomain class. 
 
 #### With Great Power...
+Now that we've seen the two types of inheritance available to us in Apex, and all the benefits it can bring us, the obvious question is: 
 
-`IS-A versus HAS-A`
+> When should I use inheritance in my code? 
 
-`SOLID`
+The answer: **Sparingly and Carefully**. 
+
+When you add any new tool to your toolbox it's natural to want to put it to use in every situation. Resist the temptation! 👿 Like most things in development benefits in one area come at the expense of another. In this case, inheritance *can* make your code more efficient, and *can* make your code more stable and extensible, but it also *does* make your code more complex. It also violates a little principle called `encapsulation`, which is the idea that an object's data and the methods operating against that data should be bundled together explictly. 
+
+> Because inheritance exposes a subclass to details of its parent's implementation, it's often said that "inheritance breaks encapsulation"
+> 
+> — Gang of Four, Design Patterns (Chapter 1)
+
+##### `IS-A versus HAS-A`
+Okay, so we wouldn't have taken all this time on inheritance to tell you not to use it. Rather, like any tool, just make sure you put it to its proper applications. 
+
+One heuristic you can use when deciding if you need inheritance in a given class is to ask: **"IS my class a \<blah\>, or should my class HAVE a \<blah\>?"**
+
+Let's take a simple example: We have classes `Dog` and `Cat`. They both have methods `makeNoise()` that do similar things. 
+
+
+##### `SOLID` Object Oriented Programming
 
 ## Wrap Up
+
+- Abstract Classes
+    - provide for efficiency through code reuse
+- Interfaces 
+    - provide more flexibility than Abstract Classes, however,
+    - cannot provide any implementation - only "the contract"
+- Subclasses
+    - an Apex class can `extend` *one and only one* superclass
+    - an Apex class can `implement` multiple interfaces
+
 
 # Related Content
 
@@ -373,6 +435,8 @@ What you **can** do, however, is `implement` any number of `interfaces`. So what
 - [The Java Tutorials: Polymorphism](https://docs.oracle.com/javase/tutorial/java/IandI/polymorphism.html)
 - [Apex Keywords](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_keywords.htm)
 - [Apex Developer Guide: Classes and Casting](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_casting.htm)
+- [Wikipedia: SOLID principles](https://en.wikipedia.org/wiki/SOLID)
+- [Design Patterns: Elements of Reusable Object-Oriented Software](https://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612/)
 
 ## Watch
 
