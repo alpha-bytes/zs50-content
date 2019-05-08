@@ -411,7 +411,9 @@ Okay, so we wouldn't have taken all this time on inheritance to tell you not to 
 
 One heuristic you can use when deciding if you need inheritance in a given class is to ask: **"IS my class a \<blah\>, or should my class HAVE a \<blah\>?"**
 
-Let's take a simple example: We have classes `Dog` and `Cat`. They both have methods `makeNoise()` that do similar things. 
+Let's take a simple example: We have classes `Dog` and `Cat`. They both have methods `makeNoise()` that do similar things. Obviously cats and dogs make slightly different noises, though. Is there an abstract class that we could think of that would make both of these statements true: 
+- *"Dog IS A \<blah\>"*, AND 
+- *"Cat IS A \<blah\>"*
 
 
 ##### `SOLID` Object Oriented Programming
