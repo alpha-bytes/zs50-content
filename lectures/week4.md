@@ -18,14 +18,16 @@ If you watched CS50's week4 lecture and thought...
 
 Let's take a moment to review some core concepts we've learned so far about classes. 
 
-> 1. Classes are blueprints for constructing objects. 
-> 2. We can also refer to a given object as an `instance` of the class from which it was constructed. 
-> 3. Classes are comprised of only two things: 
->       - Variables (characteristics of an object)
->       - Methods (things the object can *do*)
-> 4. Objects live on the `heap`, and primitives (including object pointers, or references) live on the `stack`. 
+1. Classes are blueprints for constructing objects. 
+2. We can also refer to a given object as an `instance` of the class from which it was constructed. 
+3. Classes are comprised of only two things: 
+    - Variables (characteristics of an object)
+    - Methods (things the object can *do*)
+4. Objects live on the `heap`, and primitives (including object pointers, or references) live on the `stack`. 
 
-Did we miss anything? We did not. Thus, we can confidently state that **the totallity of any Apex process is the interplay between objects and primitives**. 
+Did we miss anything? We did not. Thus, we can confidently state that 
+
+> **The totality of any Apex process is the interplay of objects and primitives, and the logic that operates on them.** 
 
 ![furSure](https://media.giphy.com/media/HFHovXXltzS7u/giphy.gif)
 
@@ -406,10 +408,10 @@ When you add any new tool to your toolbox it's natural to want to put it to use 
 > 
 > — Gang of Four, Design Patterns (Chapter 1)
 
-##### `IS-A versus HAS-A`
+##### `IS-A v. HAS-A`
 Okay, so we wouldn't have taken all this time on inheritance to tell you not to use it. Rather, like any tool, just make sure you put it to its proper applications. 
 
-One heuristic you can use when deciding if you need inheritance in a given class is to ask: **"IS my class a \<blah\>, or should my class HAVE a \<blah\>?"**
+One heuristic you can use when deciding if you need inheritance is to ask: **"IS my class a \<blah\>, or should my class HAVE a \<blah\>?"**
 
 Let's take a simple example: We have classes `Dog` and `Cat`. They both have methods `makeNoise()` that do similar things. Obviously cats and dogs make slightly different noises, though. Is there an abstract class that we could think of that would make both of these statements true: 
 - *"Dog IS A \<blah\>"*, AND 
