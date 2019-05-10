@@ -1,4 +1,4 @@
-# Week 4: Memory
+# Week 4: Apex Standard Library, Inheritance
 
 ## CS50 Week 4
 Use the links below to catchup on CS50's week3 content: 
@@ -19,7 +19,7 @@ If you watched CS50's week4 lecture and thought...
 Let's take a moment to review some core concepts we've learned so far about classes. 
 
 1. Classes are blueprints for constructing objects. 
-2. We can also refer to a given object as an `instance` of the class from which it was constructed. 
+2. We refer to a given object as an instance of the class from which it was constructed. 
 3. Classes are comprised of only two things: 
     - Variables (characteristics of an object)
     - Methods (things the object can *do*)
@@ -37,10 +37,11 @@ Okay, that may be obvious but it's worth hammering home the point that there's n
 
 Most every programming language has a standard library - a bundle of functionality that comes with the language for performing common logic. C has [libc](https://en.wikipedia.org/wiki/C_standard_library); the [Python Standard Library](https://docs.python.org/3/library/) is called just that, as is [Java's](https://docs.oracle.com/javase/7/docs/api/index.html); Javascript has a relatively small [library](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects) but there is a [TC39 Proposal](https://github.com/tc39/proposal-javascript-standard-library) to expand it (see *https://github.com/stdlib-js/stdlib*). 
 
-Apex is no different, and its standard library is documented under the [Apex Language Reference](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_reference.htm) heading in the Apex Developer Guide. A couple things to note here: 
+Apex is no different, and its standard library is documented under the [Apex Language Reference](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_reference.htm) heading in the Apex Developer Guide. A few things to note here: 
 
 1. Classes are organized into logical `namespaces` based on what they do. You can think of a namespace like a folder on your computer, where the classes it contains are the individual files in that folder.
 2. In some cases, if there is a naming conflict between a class in one namespace and the class in another, you'll need to write your code to reference the "fully qualified" class name (e.g. *\<namespace\>.\<className\>*), but this doesn't come up all that often. 
+3. *Technically*, we don't know if it's a library, per se, or rather that all of the classes are built into the language itself. The namespacing seems to indicate it's a library, but for our purposes it doesn't much matter. We can reference any of the classes available to us directly in our code. 
 
 Let's take a look at some of the common namespaces and classes you'll use in your daily life as a Salesforce developer. 
 
@@ -50,24 +51,26 @@ The System namespace contains core functionality for working in Apex, several of
 
 ##### **Primitive Wrapper classes**
 
-So, it turns out we've sort of fudged usage of the word "primitive" in prior weeks when referring to Apex primitive data types Although, the Salesforce docs use the same terminology so we get a pass 🙉. 
+So, it turns out we've sort of fudged usage of the word "primitive" in prior weeks when referring to Apex primitive data types Although, the Salesforce docs use the same terminology so we get a pass 🙉. Turns out the only true primitive in the Apex language are pointers - even `Booleans` appear to be objects. 
 
-True primitives cannot have variables or methods - hence the term. Looking at the System namespace you'll see that every ["primitive"](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_primitives.htm) Apex type has a class in this space, with exception of `Object`, whose name betrays it as obviously non-primitive. Most likely it is also an `abstract` superclass of the other primitive wrapper classes. But more on `abstraction` later. 
+True primitives cannot have variables or methods - hence the name. 
+Looking at the System namespace you'll see that every ["primitive"](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_primitives.htm) Apex type has a class in this space, all of which include instance methods (non-static) except the **Boolean** class. 
 
-We can think of and refer to these classes as `wrapper` classes, because they wrap (in some cases) true primitives like `Booleans`, providing convenience methods that make primitives easier to work with. But, sure enough, when we use them in code they get allocated on the heap, not on the stack as a true primitive would. Run the following code in Anonymous Apex in your org and inspect the logs for the evidence: 
+Sure enough, declared "primitives" such as `Integer`, `Decimal` and `Long` all provide us access to these instance methods; so we know they're objects. `Boolean` is sneaky, but still betrays itself as an object by way of successful passing to `JSON.serialize()`, which takes as its sole argument an object. Further, if you run the code in your org and view the logs, you'll see a bunch of `HEAP_ALLOCATE` lines.  
 
 ```java
-// anon apex
-String s = 'hi there you'; 
+// Run the following in anonymous apex
+Integer i = 19; 
+system.debug(i.format()); 
+Decimal d = 79.0000;
+system.debug(d.stripTrailingZeros());  
+Long l = 123456789; 
+system.debug(l.intValue().format()); 
 Boolean b = true; 
-Integer i = 42; 
+system.debug(JSON.serialize(b));
 ```
 
-Your logs should look similar to the following: 
-
-![heaped](../assets/heaped.png)
-
-Now that our heap/stack 🎈 has been sufficiently burst, let's move on to discusing some other classes you'll use frequently in Apex development. 
+The fact is, though, that it doesn't much matter whether they're true primitives or objects. We can declare them without using `new()`, providing the convenience of primitives, and Salesforce builds in a bunch of convenience methods. So it's the best of both worlds. 
 
 ##### **`Database` class**
 
@@ -146,7 +149,7 @@ try{
 
 ##### **`JSON` class**
 
-If you're writing any code that interacts with third-party web APIs, odds are they're going to return data in [json](format). Use this class to convert json strings to and from Apex data types. If you're working with Lightning Components, this is a must-have class.
+If you're writing any code that interacts with third-party web APIs, odds are they're going to return data in [json](https://www.json.org/) format. Use this class to convert json strings to and from Apex data types. If you're working with Lightning Components, this is a must-have class.
 
 ##### **HTTP classes**
 
@@ -160,11 +163,13 @@ You'll notice that `List`, `Map` and `Set` classes live in the System namespace.
 
 ##### **`Schema` class**
 
-The Schema class provides an important interface for accessing information about the org's object and field metadata using `Schema.getGlobalDescribe()`. For access to metadata about a specific SObject, see the `Schema` namespace below. 
+The Schema class provides an important interface for accessing information about the org's object and field metadata using `Schema.getGlobalDescribe()`. For access to metadata about a specific SObjectType, see the `Schema` namespace below. 
+
+Incidentally, there's also a **Schema Namespace** (see below). This duplicate use of namespace and class names happens several places in the Apex language, so just be cognisant of which one you're looking at. 
 
 ##### **`SObject` class** <a name="sobjectClass"></a>
 
-This is the superclass for all SObjects. It provides methods for dynamically accessing (`get()`) and setting (`put()`) an SObject's field values; adding custom errors to prevent dml operations against it (`addError()`); creating a cloned copy in memory (via `clone()`); and more. 
+This is the abstract superclass for all SObjects. It provides methods for dynamically accessing (`get()`) and setting (`put()`) an SObject's field values; adding custom errors to prevent dml operations against it (`addError()`); creating a cloned copy in memory (via `clone()`); and more. More on abstraction and superclasses later. 
 
 ##### **`Test` class**
 
@@ -176,7 +181,7 @@ The UserInfo class provides pertinent information regarding the runtime context 
 
 #### [Schema Namespace](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_namespace_Schema.htm)
 
-The Schema namespace houses an important collection of classes for dynamically access metadata about specific SObject data types. Probably the most common usage is accessing speicific types via the dot (.) notator, such as `Schema.Account.sObjectType` or `Schema.My_Custom_Object__c.getSObjectType()`, both of which return an instance of the `SObjectType` class for the specified type. 
+The Schema namespace houses an important collection of classes for dynamically access metadata about specific SObject data types. Probably the most common usage is accessing specific types via the dot (.) notator, such as `Schema.Account.sObjectType` or `Schema.My_Custom_Object__c.getSObjectType()`, both of which return an instance of the `SObjectType` class for the specified type. 
 
 See [Using the Schema Namespace](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_schema_namespace_using.htm) for more examples. 
 
@@ -191,15 +196,15 @@ Inheritance is, thankfully, another programming term that is self-describing. It
 
 Often, these superclasses are also *abstract*, meaning that they can't be constructed directly. Only one of the subclasses which `extends` - again, a term that doubles as a syntax reminder - the base class can be constructed. 
 
-A quick example should bring this all together for us. First we'll create the superclass. Notice the addition of the word `abstract` to the class definition. This modifier means that the class can be extended by other classes, but itself cannot be constructed. 
+A quick example should bring this all together for us. First we'll create the superclass:
 
 ```java
+// Notice the addition of the `abstract` modifier
 public abstract class SObjectDomain{
 
     private List<SObject> records;
 
     // abstract classes still can, and often do, define constructors
-   
     public SObjectDomain(List<SObject> records){
         this.records = records; 
     }
@@ -228,10 +233,10 @@ public abstract class SObjectDomain{
 
 Now that we have our abstract class, let's add an extending class that can actually be constructed. We have added `extends SObjectDomain` to the end of the class definition. Now AccountDomain is a subclass of SObjectDomain. This means a few things: 
 1. AccountDomain **must** implement any of the abstract methods defined in SObjectDomain.
-2. AccountDomain **may** utilize constructors defined in SObjectDomain.
+2. Since SObjectDomain declared a constructor (and thus the default constructor is no longer available), AccountDomain **must** utilize it. 
 3. AccountDomain **may** utilize any non-abstract methods defined in SObjectDomain. 
 
-With these rules in mind, let's build out our AccountDomain subclass: 
+With these rules in mind, let's build out a subclass that we'll name AccountDomain:
 
 ```java
 public class AccountDomain extends SObjectDomain{
@@ -277,7 +282,9 @@ But *why* should that work? Because in practical terms, what you're defining in 
 
 *Okay, okay, so subclasses can be used interchangeably with their superclass parents and we call that polymorphism. Sounds very fancy and all - but what does that **mean** to me?*
 
-The practical effect of using inheritance is that you can write code that is more stable and efficient. We saw in our SObjectDomain class that we can write methods that provide implementation to subclasses. `getRecordsSize()` is a pretty trivial example, though. Let's add another method to our SObjectDomain class that's more useful: 
+The practical effect of using inheritance is that you can write code that is more efficient, stable and extensible. We saw in our SObjectDomain class that we can write methods that provide implementation to subclasses. `getRecordsSize()` is a pretty trivial example, though. Let's consider an example that's more practical. 
+
+Imagine you have a need to validate at runtime that a list of fields, unknown in advance, are non-null in multiple types of SObjects (Account, Contact, Lead, etc.). Rather than duplicating that logic across numerous classes, we can just add the method to our SObjectDomain class. The classes dealing with specific SObjectTypes can extend it and get immediate access:   
 
 ```java
 // ... other SObjectDomain code
@@ -296,14 +303,14 @@ public Boolean fieldsAreNotNull(List<Schema.SObjectField> fields){
 
         // if all fields are non-null, return true
         return false; 
-    }
+}
 ```
 
-Now we have a method with some power!🏋 So, imagine you have a need to validate that a list of fields are non-null in various types of SObjects (Account, Contact, Lead, etc.). Rather than re-implementing (read: re-writing) all that logic in various classes for each SObject type, now you can simply have those classes extend the SObjectDomain class and they get automatic access to the `fieldsAreNotNull()` method. 
+Now we have a method with some power!🏋  Revisiting our stated benefits above, this makes your code more:
 
-Revisiting our stated benefits above, this makes your code more: 
-1) **Stable**. Because you're not duplicating logic in multiple areas, there are less places for things to go wrong. You have also defined an iron-clad contract. 
-2) **Flexible**. If you do find a bug there's one place to fix it. Or maybe you find a more efficient way to implement the logic - again, you only need to refactor in one place. Suppose you find other common things that all subclasses can benefit from - just add another method in one place and, boom 💥, all subclasses get access to it. Finally, **any methods that use the superclass as a return type or argument type can leverage the power of polymorphism.**
+1. **Efficient**. You've reduced the code you need to write from *n* to a constant of *1*. 
+2. **Stable**. There are less places for things to go wrong, and if you do find a bug there's one place to fix it. Or maybe you find a more efficient way to implement the logic - again, you only need to refactor in one place.
+3. **Extensible**. Suppose you find other common things that all subclasses can benefit from - just add another method in one place and, boom 💥, all subclasses get access to it. Finally, **any methods that use the superclass as a return type or argument type can leverage the power of polymorphism.**
 
 That last one's a big one. If you have a method that you know needs to utilize some functionality in SObjectDomain, but you don't necessarily know at write-time what *concrete* type you'll be getting, the superclass is your best friend: 
 
@@ -320,6 +327,8 @@ SomeClass.someMethod(ad); // works just dandy
 ```
 
 Plus, you still have the flexibility of taking advantage of any additional functionality that AccountDomain has added beyond the contract required by SObjectDomain. This is possible via another handy feature enabled through inheritance, called `casting`. 
+
+#### Casting
 
 Let's look at an example, assuming in our AccountDomain class we've added a `uniqueAccountMethod()` to that class:
 
@@ -350,16 +359,16 @@ Okay, if you're feeling a bit disoriented right now...
 
 ![whereAmYou](https://media.giphy.com/media/k98R792mjlpbG/giphy.gif)
 
-...don't sweat it! This whole inheritance thing can take a bit of getting used to, and we'll try to tie everything in a bow in the *Wrap Up* section below. Before we get there, though, let's look at the one other type of inheritance available to you in Apex. 
+...don't sweat it! This whole inheritance thing can take a bit of getting used to, and we'll try to tie everything in a bow in the *Wrap Up* section below. Before we get there, though, let's look at the other type of inheritance available to you in Apex. 
 
 #### Interfaces
 After reading the previous section you may have wondered, *So what happens if I want my class to inherit from **multiple** superclasses?* 
 
-For once, there's a nice, simple answer: you can't. Well, at least not with abstract classes. An Apex class can only `extend`, and inherit directly from, one class. 
+For once, there's a nice, succinct answer: you can't. Well, at least not through superclasses. An Apex class can only `extend`, and inherit directly from, one class. 
 
 What you **can** do, however, is `implement` any number of `interfaces`. So what's an interface, and how is it different from an abstract class? 
 
-You can think of an interface as the purest form of an abstract class: there can be **no** provided implementation. In other words, you define the methods that subclasses must implement and nothing else: 
+You can think of an interface as the purest form of an abstract class: there can be **no** provided implementation. In other words, you define the methods that subclasses must implement and nothing more: 
 
 ```java
 public interface IValidateSObjectFields{
@@ -373,7 +382,7 @@ Notice the following our interface definition:
 1. We replace "class" with "interface" in the class signature
 2. Method signatures do not use access modifiers (like public or private) and do not require the `abstract` modifier
 3. Methods are terminated with a semi-colon (like abstract methods)
-4. The interface name begins with **I**, as in "I do this" or "I do that". This isn't a requirement but is a common naming convention for differentiation classes from interfaces. 
+4. The interface name begins with **I**, as in "I do this" or "I do that". This isn't a requirement but is a common naming convention for differentiating interfaces from classes. 
 
 So, now the AccountDomain class we defined earlier can have multiple inheritance by `implementing` the IValidateSObjectFields interface:  
 
@@ -382,7 +391,8 @@ public class AccountDomain extends SObjectDomain implements IValidateSObjectFiel
 
     // ... other code
 
-    // IValidateSObjectFields implementation
+    // IValidateSObjectFields implementation; no "override" 
+    // modifier is necessary for interface implementation
     public Boolean fieldsAreValid(SObject sobj){
         Boolean isTrue; 
         // some logic that sets isTrue based on Account field validation
@@ -393,16 +403,14 @@ public class AccountDomain extends SObjectDomain implements IValidateSObjectFiel
 }
 ```
 
-Note that we did not need to use the `override` keyword in our AccountDomain class. 
-
 #### With Great Power...
 Now that we've seen the two types of inheritance available to us in Apex, and all the benefits it can bring us, the obvious question is: 
 
-> When should I use inheritance in my code? 
+> When should I use inheritance in my code?  
 
 The answer: **Sparingly and Carefully**. 
 
-When you add any new tool to your toolbox it's natural to want to put it to use in every situation. Resist the temptation! 👿 Like most things in development benefits in one area come at the expense of another. In this case, inheritance *can* make your code more efficient, and *can* make your code more stable and extensible, but it also *does* make your code more complex. It also violates a little principle called `encapsulation`, which is the idea that an object's data and the methods operating against that data should be bundled together explictly. 
+When you add any new tool to your toolbox it's natural to want to put it to use in every situation. Resist the temptation! 👿 Like most things in development, benefits in one area incur a cost in a differnt area. In this case, inheritance *can* make your code more efficient, and *can* make your code more stable and extensible, but it *definitely does* make your code more complex. It also violates a little principle called `encapsulation`, which is the idea that an object's data and the methods operating against that data should be bundled together explictly. 
 
 > Because inheritance exposes a subclass to details of its parent's implementation, it's often said that "inheritance breaks encapsulation"
 > 
@@ -451,3 +459,4 @@ Let's take a simple example: We have classes `Dog` and `Cat`. They both have met
 
 ## Code
 
+- [Github - Financial Force: Apex Enterprise Patterns](https://github.com/financialforcedev/df12-apex-enterprise-patterns)
