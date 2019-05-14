@@ -410,7 +410,7 @@ Now that we've seen the two types of inheritance available to us in Apex, and al
 
 The answer: **Sparingly and Carefully**. 
 
-When you add any new tool to your toolbox it's natural to want to put it to use in every situation. Resist the temptation! 👿 Like most things in development, benefits in one area incur a cost in a differnt area. In this case, inheritance *can* make your code more efficient, and *can* make your code more stable and extensible, but it *definitely does* make your code more complex. It also violates a little principle called `encapsulation`, which is the idea that an object's data and the methods operating against that data should be bundled together explictly. 
+When you add any new tool to your toolbox it's natural to want to put it to use in every situation. Resist the temptation! 👿 Like most things in development, benefits in one area incur a cost in another. In this case, inheritance *can* make your code more efficient, and *can* make your code more stable and extensible; the flip side is it *does* make your code more complex. It also violates a little principle called `encapsulation`, which is the idea that an object's data and the methods operating against it should be bundled together explictly inside the class. 
 
 > Because inheritance exposes a subclass to details of its parent's implementation, it's often said that "inheritance breaks encapsulation"
 > 
@@ -425,20 +425,46 @@ Let's take a simple example: We have classes `Dog` and `Cat`. They both have met
 - *"Dog IS A \<blah\>"*, AND 
 - *"Cat IS A \<blah\>"*
 
+An abstract `Animal` class would fit the bill, no? Dogs and Cats are both Animals, and so we could make them subclasses of Animal, where `makeNoise()` is an abstract method. Then we could add common methods to Animal, such as `getHeight()`, `getWeight()`, etc. 
 
-##### `SOLID` Object Oriented Programming
+Now, dogs and cats both have noses too, right? But we would never say that a Dog *IS* a Nose, or a Cat *IS* a Nose. Rather, if Nose is a complex type in our system (noses are pretty complicated), it would make more sense to have Dog and Cat classes declare instance variables of type Nose.
+
+> What we have just described is a principle known as **favoring composition over inheritance**. Which is to say that, in most cases, it makes more sense for a class to *HAVE-A-\<insertTypeHere\>* than to *BE-A-\<insertTypeHere\>*. 
+
+##### Refactoring
+
+One more rule-of-thumb on inheritance: refactor work is a natural point to consider implementing inheritance. This is the case because the code has usually been in-place for awhile and the real world requirements have become more clear. 
+
+When implementing inheritance you want to make sure you're creating complexity for current or likely future needs. So, when writing code for the first time, if the need for inheritance isn't clear or the prospect for its need only hypothetical, opt for a simpler solution. You'll thank yourself if and when it comes time to refactor. 
+
+##### Theory v Practice
+
+You may be feeling like this is still very theoretical and frankly, that you can't really see a practical application for inheritance. That is totally normal.
+
+It may help to see some real-world examples in practice, and one of the best out there for Apex is Financial Force's [Apex Enterprise Patterns](https://github.com/financialforcedev/df12-apex-enterprise-patterns) github repo. This is a great example of pairing theoretical with practical application, and these patterns are widely used in Salesforce implementations. 
+
+### `SOLID` Object Oriented Programming
+While we won't go in-depth, this week we've covered a lot of ground on the **L** in [SOLID](https://en.wikipedia.org/wiki/SOLID) object-oriented programming (OOP). SOLID is a paradigmatic model for writing great OOP code and it's worth exploring the other concepts, but by no means required content. 
 
 ## Wrap Up
 
 - Abstract Classes
-    - provide for efficiency through code reuse
+    - defines a `contract` that subclasses must fulfill
+    - *may* declare `abstract` methods (subclasses must implement)
+    - *may* provide methods with implementation (subclasses inherit)
+    - *may* declare instance variables (subclasses inherit)
+    - *may* declare constructors (subclasses *must* utilize)
 - Interfaces 
-    - provide more flexibility than Abstract Classes, however,
+    - like a pure abstract class - no implementation
+    - provide more flexibility than Abstract Classes; however,
     - cannot provide any implementation - only "the contract"
 - Subclasses
     - an Apex class can `extend` *one and only one* superclass
     - an Apex class can `implement` multiple interfaces
-
+- Implementing Inheritance
+    - implement only for *known or likely* use cases; not theoretical ones
+    - when in doubt, write the simplest code possible and wait for refactor time to see if inheritance is necessary
+    - Remember to favor `HAS-A` v `IS-A` (composition over inheritance)
 
 # Related Content
 
@@ -449,13 +475,6 @@ Let's take a simple example: We have classes `Dog` and `Cat`. They both have met
 - [Apex Developer Guide: Classes and Casting](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_casting.htm)
 - [Wikipedia: SOLID principles](https://en.wikipedia.org/wiki/SOLID)
 - [Design Patterns: Elements of Reusable Object-Oriented Software](https://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612/)
-
-## Watch
-
-### CS50 Shorts
-
-- [Data Structures](https://www.youtube.com/embed/3uGchQbk7g8?autoplay=1&rel=0)
-- [Hash Tables](https://www.youtube.com/embed/nvzVHwrrub0?autoplay=1&rel=0)
 
 ## Code
 
