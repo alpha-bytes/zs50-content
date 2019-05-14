@@ -4,3 +4,4 @@ Access lecture notes for each week below:
 - [week1: C (...and Apex)](week1.md)
 - [week2: Memory, Debugging, Collections, Apex Triggers](week2.md)
 - [week3: Stack, Heap, Pointers](week3.md)
+- [week4: Apex Standard Library, Inheritance](week4.md)
