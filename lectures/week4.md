@@ -302,7 +302,7 @@ public Boolean fieldsAreNotNull(List<Schema.SObjectField> fields){
         }
 
         // if all fields are non-null, return true
-        return false; 
+        return true; 
 }
 ```
 
