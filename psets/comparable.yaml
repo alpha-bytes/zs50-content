@@ -1,0 +1,103 @@
+apexClassNames: 
+  - LeadDomain
+  - LeadEnrichmentService
+  - LeadWrapper
+
+scaffold: |
+  public class LeadWrapper implements Comparable{
+
+    // Instance member vars
+    public Lead theLead; 
+    public String company;
+
+    // implement a single-argument constructor which accepts an argument of type Lead, and
+    // set theLead to the passed-in Lead
+    // set company to the passed in Lead's Company
+
+    // Implement the compareTo() method. It takes a single argument of type `Object` which you'll need to `cast`to `LeadWrapper`
+    // Comparison should be based on the `LeadWrapper.company` values without respect to case. Hint The String class's methods, particularly hashCode(), might be very useful to you here.
+      // Return `-1` if `this` instance's company should be alphabetically-sorted *before* **compareTo**'s company, 
+      // Return `1` if `this` instance's company should be alphabetically sorted *after* **compareTo**'s company
+      // In all other cases, return `0` (company values must be the same)
+  }
+
+commitDml: false
+
+globalVars: 
+  - |
+    public class HttpEnrichmentService{
+      public Map<String, String> enrich(Set<String> companies){
+        return new Map<String, String>{
+          'Wok and Roll' => 'Accommodation and Food Services', 
+          'Schwing America' => 'Manufacturing', 
+          'Frying Nemo' => 'Agriculture, Forestry, Fishing and Hunting'
+        };
+      }
+    }
+    public class LeadWrapperTest{
+      
+      private List<Lead> theLeads; 
+      private List<LeadWrapper> theWrappers;
+      
+      public LeadWrapperTest(List<Lead> theLeads, List<LeadWrapper> theWrappers){
+        this.theLeads = theLeads; 
+        this.theWrappers = theWrappers; 
+      }
+
+      public Boolean assertOrder(){
+        theWrappers.sort();
+        system.debug(theWrappers); 
+        List<String> companies = new List<String>();
+  -     "for(Lead l : theLeads){"
+  -        "companies.add(l.Company);"
+  -     "}"
+  -     "companies.sort();"
+  -     "system.debug(companies);"
+  -     "for(Integer i = 0; i < companies.size(); i++){"
+  -       "if(!companies[i].equalsIgnoreCase(theWrappers[i].company))"
+  -         "return false;" 
+  -     "}"
+  -     "return true;"
+  -   "}"
+  - "}"
+  # will mimic a static method call by shadowing the class name
+  - "static HttpEnrichmentService HttpEnrichmentService = new HttpEnrichmentService();"
+  - "LeadDomain ld;" 
+  - "List<Lead> leads;"
+  - "List<LeadWrapper> wrappers = new List<LeadWrapper>();"
+  - "List<String> companies = new List<String>();"
+  - "List<String> results = new List<String>();"
+
+# **OPTIONAL**
+# Prevalidation executions are wrapped in a try/catch block, and are helpful for any pre-processing steps required for validations.
+# steps. Often they will perform actions against global variables initialized above. 
+executePrevalidation: 
+  - |
+    Lead a = new Lead(firstName='Keyser', lastName='Soze', company='UC Containers');
+    Lead b = new Lead(firstName='Benny', lastName='Hanna', company='Treats'); 
+    Lead c = new Lead(firstName='Pigeon', lastName='Toady', company='Cornerstone.com');
+    Lead d = new Lead(firstName='Steven', lastName='Fryler', company='Wok and Roll'); 
+    Lead e = new Lead(firstName='Garth', lastName='Algar', company='Schwing America'); 
+    Lead f = new Lead(firstName='Nemo', lastName='Run', company='Frying Nemo'); 
+    leads = new List<Lead>{ a, b, c, d, e, f }; 
+    ld = new LeadDomain(leads);
+    ld.doBeforeInsert();
+  - "for(Lead l : leads){"
+  -   "wrappers.add(new LeadWrapper(l));"
+  -   "companies.add(l.Company);"
+  -  "}" 
+
+validations:
+  - assert: "system.assertEquals('Accommodation and Food Services', leads[3].Industry);"
+  - assert: "system.assertEquals('Manufacturing', leads[4].Industry);"
+  - assert: "system.assertEquals('Agriculture, Forestry, Fishing and Hunting', leads[5].Industry);"
+  - execute:
+      "companies.sort();
+      wrappers.sort();
+      for(LeadWrapper lw : wrappers){
+        results.add(lw.company);
+      }"
+    evaluate: "new LeadWrapperTest(leads, wrappers).assertOrder();"
+    invMsg: "'Improper sort. \\nExpected: ' + companies + '\\nReceived: ' + results + '';"
+
+...

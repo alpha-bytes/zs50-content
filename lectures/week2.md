@@ -133,12 +133,11 @@ Lists are one of the collection data types available in Apex, the others being `
 |Map| Collection of mappings (think "rows") of unique `keys` to `values`
 
 
-### Sorting
-CS50 spent a lot of time this week on different sorting algorithms. While intellectually stimulating, we don't really need to worry about selecting the best sorting algorithm in Apex - the Salesforce runtime takes care of that for us. 
-
-However, one thing you might want to take a look at - or store in your mind's back pocket for later - is that we *can* tell Salesforce *what criteria to use* when sorting our custom types (e.g. Apex Classes we create).
-
-This is done through the `equals()` and `hashCode()` methods, which can be implemented on any custom type. Take a look at the documentation [here](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections_maps_keys_userdefined.htm) to learn more. 
+> Aside: You'll notice that both `Sets` and `Maps` require uniqueness, in items and keys, respectively. One thing to store in your back pocket is that we can tell Salesforce *what criteria to use* to determine the uniqueness of our custom types (e.g. Apex Classes we create).
+> 
+> Why would you want to do this? If we don't tell Salesforce how to determine uniqueness the default behavior is to "serialize" those objects into Strings, and then compare those Strings against each other. Obviously, for objects with a lot of instance variables this could get expensive (in terms of memory). 
+> 
+> So, in cases where there's an easier way to tell if your objects are unique, simply implement the `equals()` and `hashCode()` methods on your custom types. Then rather than serializing your objects as they are added to `Sets` or as keys in `Maps`, Salesforce will call the logic you've provided. Take a look at the documentation [here](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/langCon_apex_collections_maps_keys_userdefined.htm) to learn more. 
 
 ### Debugging
 CS50 week2 covered this topic a bit and we've glossed over it here to focus on more core concepts, but it's an important aspect of developing in Apex (or any language). The term `debugging` may sound like something you do after hiking through the woods in a t-shirt and, in a way, it's similar. It's the process of locating and removing bugs - unwanted behavior - from the code you write. 
