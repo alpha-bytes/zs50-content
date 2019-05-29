@@ -165,6 +165,19 @@ Did we just create an Account through the REST API? You bet we did. To confirm, 
 We've only touched on the things you can do with the standard REST API. To learn more check out the full documentation and/or spend some time tinkering via Workbench or your command-line tool of choice. Just make sure you're not logged-into an end-user prod instance - tinkering tends to be frowned upon in those orgs 😛.  
 
 #### Outbound Web Services in Apex
+We have explored how to access the standard Salesforce REST API. Now, let's switch gears and see how we can access *any* API from inside the Salesforce runtime, via Apex. Salesforce makes this a relatively simple exercise, by way of `Http`, `HttpRequest` and `HttpResponse` classes we first caught a glimpse of last week in the `System` namespace. 
+
+For our example we'll access the open-source [SWAPI](https://swapi.co/) API, the first (and only?) dedicated API for all your *Star Wars* universe data needs 🙌 😛. We can break the process into three steps: 
+1. Build the request (`HttpRequest` instance)
+2. Send the request (`Http.send()` static method)
+3. Work with the result (`HttpResponse` instance)
+
+**Construct The Request**
+First we'll create a new instance of the [HttpRequest](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_restful_http_httprequest.htm#apex_classes_restful_http_httprequest) class, and populate the pertinent values: 
+
+```java
+
+```
 
 
 
