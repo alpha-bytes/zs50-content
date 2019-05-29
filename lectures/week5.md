@@ -18,17 +18,68 @@ HTTP, the `Hypertext Transfer Protocol`, is something we utilize literally every
 
 So HTTP is kind of a big deal. But it's just one of many protocols that lives atop two other technologies which, due to their ubiquity in networking applications, are almost always discussed together: `IP` (Internet Protocol) and `TCP` (Transmission Control Protocol). 
 
-CS50 touched on these lightly and, really, they're low-level enough that we don't need to know too much about them. Suffice to say that IP dictates the route by which a client and server find each other as well as the means by which the data they exchange gets "chunked" into smaller `packets`. TCP, on the other hand, dictates where those packets get sent once they are on the requested machine. An easy analogy might be to think of IP as a large carrier service like UPS or Fedex delivering a package to a large apartment complex. They deliver the package to the front desk, but it's the concierge (this is a fancy apartment 😉) - TCP - takes that package the remainder of the journey to its final destination in the building. 
+CS50 touched on these lightly and, really, they're so low-level that we don't need to know too much about them. Suffice to say that IP dictates the route by which a client and server find each other as well as the means by which the data they exchange gets "chunked" into smaller `packets`. TCP, on the other hand, dictates where those packets get sent once they are on the requested machine. An apt analogy is to think of IP as a carrier service like UPS that is delivering a package to a large apartment complex. UPS (IP) delivers the package to the front desk, but it's the concierge (TCP) that ferries it to its final destination *inside* the building (it's a fancy apartment complex 😉).
 
-So, if `TCP/IP` handles the bundling and delivery of data on the web, what does HTTP do? It defines the rules around how clients *request* resources, and the *response* fromat that the receiving server should send. 
+So, if `TCP/IP` handles the bundling and delivery of data on the web, what does HTTP do? It defines the rules around how clients *request* resources and the *response* format that the server must implement. These rules cover a number of things, but we'll focus on two: `request methods`, and request and response `bodies`. 
 
-- Decoding Hypertext Transfer Protocol (HTTP)
-    - computers only understand bits, and can only send them
-    - HTTP is a protocol that interprets those bits *only* as text
-    - the `hyper` simply means the transmitted text represents some higher-order concept
-- What about `HTTPS`? 
-    - still just HTTP, with `SSL` atop it
-- HTTP Status Codes
+#### Request Methods
+
+Requests on the web can be made by a client via a limited amount of methods. Method in this context isn't the same thing as a method defined in an Apex class - it simply refers to the type of request being made (sometimes referred to as the request "verb"). Some of the most common are: 
+
+- `GET`: request a resource from server with no other effects
+- `POST`: create a new instance of the given resource type on the server
+- `PUT`: update an existing resource on the server
+- `DELETE`: remove a resource from the server
+
+You'll notice all the methods above revolve around `resources`. That is because every - *every* - URL on the web represents a resource. That fact is actually made plain in the acronym itself - [Uniform Resource Locator](https://en.wikipedia.org/wiki/URL#Syntax). Whether you're browsing a website or interacting with an API from the command line, if you're using HTTP, you're acting on resources.
+
+#### Bodies
+
+Like an HTML page, HTTP messages (requests and responses) consist of a [`header`](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields), representing the metadata of the message and, optionally, a `body` containing message data. 
+
+So what's in a body, and what's it used for? Let's start with the second part of the question. Remembering that we work on resources over HTTP, message bodies are most often used to represent a resource that needs to be created or updated (`POST`, `PUT`), or that is returned from the server (`GET`). 
+
+The `content-type`, the data that makes up a body, is dependent on the server resource being acted upon. There are many valid types and Mozilla Developer Network (MDN) lists some of the more common ones [here](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types). 
+
+The one that you really need to know, though, and which is used in the vast majority of web services built today, is `JSON` (Javascript Object Notation). Despite its name, you don't need to learn Javascript to work with JSON. It is a language-independent data exchange format. 
+
+[JSON](https://www.w3schools.com/js/js_json_intro.asp) is a lightweight format that is simply a collectin of name / value pairs. Names must be enclosed in double quotes (`"`), and values must be one of a handful of valid "primitive" types, including `string`, `number`, and `boolean`, as well as compound types `object` or `array`. Let's take a look at a simple example that might be used to represent the ZS50 class: 
+
+```json
+{
+    "locale": "english",
+    "primaryLanguage": "Apex", 
+    "additionalLanguages": ["C", "Java", "Javascript"],
+    "exuberantUseOfGifs": true, 
+    "cornyPuns": true,
+    "urls": [
+        { "baseUri": "https://alpha-bytes.github.io/zs50-content" },
+        { "challenges": "/psets/list.html" },
+        { "lectures": "/lectures/list.html" }
+    ]
+}
+```
+
+#### Time for a `REST`
+
+Let's review what we've covered so far: 
+- every URL on the web represents a resource
+- those resources are of some specific data type
+- many APIs today utilize the JSON data type to represent resources
+
+
+
+- A ton of additional functionality
+- `Representational State Transfer` 
+    - popular web services paradigm
+    - has largely replaced older and heavier SOAP protocol (though not completely) and the less standardized Remote Process Invocation (RPI) paradigm
+    - each endpoint is a `resource`
+    - each resource can support any of the HTTP `verbs`
+- Experience REST (Workbench)
+
+#### Outbound Web Services in Apex
+
+#### Inbound Web Services in Apex
 
 ### Document Object Model (DOM)
 
@@ -52,29 +103,12 @@ So, if `TCP/IP` handles the bundling and delivery of data on the web, what does 
     - since emergence of [Node.js](https://nodejs.org/en/), runtime engine for JS
     - now used frequently as central "back end" (i.e. server-side) application lang
 
-### Salesforce Rediscovered
-
-- Can of course be experienced through the UI
-
-#### Take a `REST`
-
-- A ton of additional functionality
-- `Representational State Transfer` 
-    - popular web services paradigm
-    - has largely replaced older and heavier SOAP protocol (though not completely) and the less standardized Remote Process Invocation (RPI) paradigm
-    - each endpoint is a `resource`
-    - each resource can support any of the HTTP `verbs`
-- Experience REST (Workbench)
-
-#### Outbound Web Services in Apex
-
-#### Inbound Web Services in Apex
-
-
 ## Related Content
 
 ### Read
-- [The Virtual DOM](https://bitsofco.de/understanding-the-virtual-dom/)
+- [HTTP Messages - Mozilla Developer Network (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages)
+- [Introduction to JSON - W3 Schools](https://www.w3schools.com/js/js_json_intro.asp)
+- [JSON.org](https://www.json.org/)
 - [Codecademy: What is REST](https://www.codecademy.com/articles/what-is-rest)
 
 ### Watch
