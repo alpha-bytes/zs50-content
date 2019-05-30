@@ -16,7 +16,7 @@ HTTP, the `Hypertext Transfer Protocol`, is something we utilize literally every
 
 ![neilTyson](https://media.giphy.com/media/zKsfeEYZI4Ku4/giphy.gif)
 
-So HTTP is kind of a big deal. But it's just one of many protocols that lives atop two other technologies which, due to their ubiquity in networking applications, are almost always discussed together: `IP` (Internet Protocol) and `TCP` (Transmission Control Protocol). 
+So HTTP is kind of a big deal. But it's just one of many protocols that lives atop two other technologies which, due to their interdependence in networking applications, are almost always discussed together: `IP` (Internet Protocol) and `TCP` (Transmission Control Protocol). 
 
 CS50 touched on these lightly and, really, they're so low-level that we don't need to know too much about them. Suffice to say that IP dictates the route by which a client and server find each other as well as the means by which the data they exchange gets "chunked" into smaller `packets`. TCP, on the other hand, dictates where those packets get sent once they are on the requested machine. An apt analogy is to think of IP as a carrier service like UPS that is delivering a package to a large apartment complex. UPS (IP) delivers the package to the front desk, but it's the concierge (TCP) that ferries it to its final destination *inside* the building (it's a fancy apartment complex 😉).
 
@@ -115,11 +115,11 @@ There is a specific SObject resource for every standard and custom object availa
 
 Okay, so what we're viewing here is the primary Account resource. You'll notice you can expand the `objectDescribe` folder to view some basic metadata about the Account object. 
 
-Remember how most REST APIs these days utilize the JSON format? So does the Salesforce REST API. Click the **Show Raw Response** link to toggle a view of the raw HTTP response message sent from Salesforce. The first block of lines in the response are the `headers` sent in the message, followed by the `body` JSON after the empty line. Workbench is taking the raw response, and from it generating a handly little UI for crawling the API. Nice, right?
+Remember how most REST APIs these days utilize the JSON format? So does the Salesforce REST API. Click the **Show Raw Response** link to toggle a view of the raw HTTP response message sent from Salesforce. The first block of lines in the response are the `headers`, followed by the `body` JSON after the empty line. Workbench is taking the raw response, and from it generating a handly little UI for crawling the API. Nice, right?
 
 ![workbench3](../assets/workbench3.png)
 
-So now we know have a handly tool for exploring the REST API. But that's only part of the story - thus far, we've only been utilizing `GET` requests. Useful for retrieving information, but to effect any CRUD changes we'll need to make use of those Http method radio buttons. 
+So now we know have a handly tool for exploring the REST API. But that's only part of the story - thus far, we've only been utilizing `GET` requests. Useful for retrieving information, but to effect any resource *changes* we'll need to make use of those Http method radio buttons. 
 
 Let's have some fun. Click the `POST` radio button from your current location (`/services/data/v45.0/sobjects/Account`). Notice you can now input a request body. Copy and paste the following into the Request Body input and click Execute: 
 
@@ -162,7 +162,7 @@ Did we just create an Account through the REST API? You bet we did. To confirm, 
 
 ![yaBasic](https://media.giphy.com/media/l4pTj6EUhKRklNh4Y/giphy.gif)
 
-We've only touched on the things you can do with the standard REST API. To learn more check out the full documentation and/or spend some time tinkering via Workbench or your command-line tool of choice. Just make sure you're not logged-into an end-user prod instance - tinkering tends to be frowned upon in those orgs 😛.  
+We've only touched on the things you can do with the standard REST API. To learn more check out the full documentation and/or spend some time tinkering via Workbench or your command-line tool of choice. Just make sure you're not logged into a customer prod instance - tinkering tends to be frowned upon in those orgs 😛.  
 
 #### Outbound Http in Apex
 We have explored how to access the standard Salesforce REST API. Now, let's switch gears and see how we can access *any* API from inside the Salesforce runtime, via Apex. Salesforce makes this a relatively simple exercise, by way of `Http`, `HttpRequest` and `HttpResponse` classes we first caught a glimpse of last week in the `System` namespace. 
@@ -172,7 +172,8 @@ For our example we'll access the open-source [SWAPI](https://swapi.co/) API, the
 2. Send the request (`Http.send()` static method)
 3. Work with the result (`HttpResponse` instance)
 
-**Construct The Request**
+**Build The Request**
+
 SWAPI has 6 resources that we can access. In our case, we're just raaaaaahhgh to know about our favorite Star Wars character, Chewbacca. We'll use the SWAPI `people` resource to get more details. 
 
 First we'll create a new instance of the [HttpRequest](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_restful_http_httprequest.htm#apex_classes_restful_http_httprequest) class, and populate the pertinent values: 
@@ -186,7 +187,11 @@ request.setMethod('GET');
 request.setEndpoint('https://swapi.co/api/people/?search=chewbacca'); 
 ```
 
-There are several other methods you can utilize, including `setHeader()` and `setBody()`, but for our example that's all we need. Next, we'll use a static method on the `HTTP` class to execute our request, and inspect the result via `HttpResponse` instance methods: 
+There are several other methods you can utilize, including `setHeader()` and `setBody()`, but for our example that's all we need. 
+
+**Send the Request, Inspect the Result**
+
+Next, we'll use a static method on the `HTTP` class to execute our request, and inspect the result via `HttpResponse` instance methods: 
 
 ```java
 // ... other code from above
@@ -220,7 +225,7 @@ And that's it - we've just worked with an external API in Apex. One note: most A
 
 #### Inbound Http in Apex (Apex REST)
 
-So far we've seen how we can work with the standard Salesforce REST API as well as how to access external resources over Http in Apex itself. What if we want to build our own REST resources on Salesforce? Is that possible? Well, of course, otherwise there wouldn't be a section for it, right? 
+What if we want to build our own REST resources on Salesforce to extend or abstract what's available via the standard REST API? Is that possible? Well, of course, otherwise there wouldn't be a section for it, right? 
 
 In fact, exposing custom REST endpoints for external consumers (business partners, consumers, etc) is pretty straight forward. Following are the basic steps: 
 1. Create a `global` Apex class that will be your handler for requests, and apply the `@RestResource` annotation to it
