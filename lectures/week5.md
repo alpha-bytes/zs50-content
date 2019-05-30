@@ -167,22 +167,107 @@ We've only touched on the things you can do with the standard REST API. To learn
 #### Outbound Http in Apex
 We have explored how to access the standard Salesforce REST API. Now, let's switch gears and see how we can access *any* API from inside the Salesforce runtime, via Apex. Salesforce makes this a relatively simple exercise, by way of `Http`, `HttpRequest` and `HttpResponse` classes we first caught a glimpse of last week in the `System` namespace. 
 
-For our example we'll access the open-source [SWAPI](https://swapi.co/) API, the first (and only?) dedicated API for all your *Star Wars* universe data needs 🙌 😛. We can break the process into three steps: 
+For our example we'll access the open-source [SWAPI](https://swapi.co/) API, the first (and only?) API dedicated to fulfilling your *Star Wars* universe data needs 🙌 😛. We can break the process into three steps: 
 1. Build the request (`HttpRequest` instance)
 2. Send the request (`Http.send()` static method)
 3. Work with the result (`HttpResponse` instance)
 
 **Construct The Request**
+SWAPI has 6 resources that we can access. In our case, we're just raaaaaahhgh to know about our favorite Star Wars character, Chewbacca. We'll use the SWAPI `people` resource to get more details. 
 
 First we'll create a new instance of the [HttpRequest](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_restful_http_httprequest.htm#apex_classes_restful_http_httprequest) class, and populate the pertinent values: 
 
 ```java
-
+// create new instance
+HttpRequest request = new HttpRequest(); 
+// lets define our http method first
+request.setMethod('GET'); 
+// now let's set our destination; SWAPI resources support search via a URL param, so we'll include that
+request.setEndpoint('https://swapi.co/api/people/?search=chewbacca'); 
 ```
+
+There are several other methods you can utilize, including `setHeader()` and `setBody()`, but for our example that's all we need. Next, we'll use a static method on the `HTTP` class to execute our request, and inspect the result via `HttpResponse` instance methods: 
+
+```java
+// ... other code from above
+// Http.send() returns an instance of HttpResponse - just what we need!
+HttpResponse response = Http.send(request); 
+// first, let's make sure we received a success response
+if(response.getStatusCode() == 200){
+    // assuming it did, let's inspect what was returned
+    String resBody = response.getBody(); 
+    /** 
+      * SWAPI returns data in JSON format, so we'll use the handy System.JSON class to help us work with it
+      * JSON.deserialize() takes a String of properly-formatted JSON, and "deserializes" it 
+      * (converts from String to a complext type). Let's assume here that we've created a 
+      * StarWarsPerson class with all the possible properties that SWAPI could return in a response. 
+      * JSON.deserialize() can also only return a generic Object type, so we'll need to use that fancy 
+      * casting ability we learned about last week to cast down to our specific type. 
+      **/ 
+    StarWarsPerson chewwy = (StarWarsPerson) JSON.deserialize(resbody); 
+    // let's learn more about Chewbacca!
+    system.debug(chewwy.birth_year); // 200BBY
+    system.debug(chewwy.eye_color); // blue (really??)
+    system.debug(chewwy.homeworld); // https://swapi.co/api/planets/14/ - we can use this to explore the API programmatically!
+    system.debug(chewwy.url); // https://swapi.co/api/people/13/ - this is the resource URL for Chewbacca - check it out in your browser to confirm these results!
+} else {
+    // write the issue to the debug logs
+    system.debug('Uh oh. Something went wrong. Server response: status ' + response.getStatusCode()); 
+}
+```
+
+And that's it - we've just worked with an external API in Apex. One note: most APIs you'll use in a professional context will require some type of authentication. Sometimes OAuth, but in most cases at least an API "key" so that the provider can track usage and prevent abuse. For basic authentication like this, consider using the [Named Credential](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_callouts_named_credentials.htm) feature in Salesforce rather than hard-coding API keys or username/password credentials. You'll thank yourself during security review 😎. 
 
 #### Inbound Http in Apex (Apex REST)
 
+So far we've seen how we can work with the standard Salesforce REST API as well as how to access external resources over Http in Apex itself. What if we want to build our own REST resources on Salesforce? Is that possible? Well, of course, otherwise there wouldn't be a section for it, right? 
 
+In fact, exposing custom REST endpoints for external consumers (business partners, consumers, etc) is pretty straight forward. Following are the basic steps: 
+1. Create a `global` Apex class that will be your handler for requests, and apply the `@RestResource` annotation to it
+2. Define a relative URL for your resource. This will be appended to the base `https://<yourinstance>.salesforce.com/services/apexrest/` resource and must be unique in your org. 
+3. Create one static *class* method for each *HTTP* method you'll support, and apply the appropriate annotation. Only one method may be defined for each [supported](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_rest_annotations_list.htm) HTTP verb.  
+4. Watch the requests roll in!
+
+Okay, so let's see a concrete example. Continuing our prior example, let's say we're hosting a Star Wars convention and have set up a web page for registration. The web page allows visitors to submit the character they'll be dressing up as, at which point they'll be redirected to a page containing helpful information about that character so they can rock an authentic costume. We'll recycle our `StarWarsPerson` class from above as a return type for the web page to consume. 
+
+This endpoint will require the form fields as input, so we'll only accept `POST` requests with the appropriate body. 
+
+**Create the Handler Class and Methods**
+
+```java
+@RestResource(urlMapping='/convention/attendee')
+global class RestConventionAttendee{
+
+    /**
+      * Define the static handler method for POST requests to this endpoint. 
+      * We'll assume we also created a ConventionAttendee class. Salesforce will 
+      * deserialize JSON request bodies to the defined parameter type(s), which is 
+      * why we have a method parameter defined. See https://sforce.co/2WkBT5m for 
+      * information on allowable return and parameter types. 
+      **/
+
+    @HttpPost
+    global static StarWarsPerson handlePost(ConventionAttendee attendee){
+        String character = attendee.character_name. 
+        StarWarsPerson swp = // ... code to get character details from SWAPI, like above
+        return swp; 
+    }
+
+}
+```
+
+There you have it! We have a fully-functional, custom REST endpoint defined for our use case. One important note for "in the wild" implementations is that Apex REST services require authentication for access (technically, there *is* one workaround for exposing unauthenticated endpoints, but it involves a Visualforce page and, frankly, we're just not going there 🙉). Covering authentication is beyond the scope of this class, but if you're interested check out the [Salesforce Help](https://help.salesforce.com/articleView?id=remoteaccess_authenticate.htm&type=0) article on `OAuth` flows. Or just pass it to along to the callers of your REST API and tell them it's required 😉. 
+
+## Wrap Up
+
+The power of the internet comes from the interoperability of machines connected to it from any location. Now we know a bit more about how to harness that power, specifically: 
+
+- Foundational understanding of HTTP mechanics and standards
+- How to utilize the standard Salesforce REST API
+- Interacting with third-party resources inside of Apex, and
+- Exposing custom REST resources through Apex REST
+
+Welcome to the wired jungle - now head over to the challenges section for some practice!
 
 ## Related Content
 
@@ -193,6 +278,7 @@ First we'll create a new instance of the [HttpRequest](https://developer.salesfo
 - [What is REST](https://www.codecademy.com/articles/what-is-rest) (Codecademy)
 - [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) (Wikipedia)
 - [Salesforce REST API](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_what_is_rest_api.htm)
+- [Exposing Apex Classes as REST Endpoints](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_rest.htm) (Apex Developer Guide)
 
 ### Watch
 
