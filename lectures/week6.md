@@ -69,8 +69,8 @@ Additionally, if you plan to implement code modularization through packaging ([r
 If this week's content seemed brief for such a large topic, that brevity was intentional. Design patterns, while a powerful tool to put in your dev toolbelt, can be overwhelming if you're just starting out. 
 
 So, to condense this week's lesson into some TL;DR takeaways: 
-1. Implement the `Domain / Selector` layers in *every* org in which you write production-bound code; *otherwise*
-3. Always seek the simplest solution first - the need for more advanced solutions or abstractions will *emerge* over time; *and*
+1. Implement the `Domain / Selector` layers in **every** org in which you write production-bound code; *otherwise*
+3. Always seek the simplest solution first - the need for more advanced solutions or abstractions will **emerge** over time; *and*
 2. Generally, leave design pattern implementation for **refactor** time. 
 
 Happy coding!
