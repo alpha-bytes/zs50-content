@@ -1,4 +1,4 @@
-# Week 6: Salesforce Dev Tools
+# Week 6: ~~Python~~ Design Patterns
 
 ## CS50 Week 6
 Use the links below to catchup on CS50's week6 content: 
