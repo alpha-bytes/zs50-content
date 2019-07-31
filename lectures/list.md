@@ -6,3 +6,4 @@ Access lecture notes for each week below:
 - [week3: Stack, Heap, Pointers](week3.md)
 - [week4: Apex Standard Library, Inheritance](week4.md)
 - [week5: HTTP and REST](week5.md)
+- [week6: Design Patterns](week6.md)
