@@ -16,11 +16,11 @@ Note: there won't be any Apex challenges this week, so take the opportunity to c
 
 ### Design Patterns - An Introduction
 
-When we say the term `design pattern`, you may be picturing this: 
+When we use the term `design pattern`, you may be picturing this: 
 
 ![bobRoss](https://media.giphy.com/media/AbPNdmgk6TJK/giphy.gif)
 
-In a way, actually, it's not that far off! Just like a painting needs layers to make a cohesive whole, so too can your codebase benefit from the same type of "layering" mindset. 
+In a way, actually, it's not that far off! Just like a painting needs layers to make a cohesive whole, so too will your codebase benefit from the same type of "layering" mindset. 
 
 Think about it this way. When you create an Apex class, you're doing so to achieve a certain goal. That's the class's purpose, and you probably give it a descriptive name to make that purpose clear. Over time, you begin to accumulate many classes that solve the same types of problems. Said another way, they share the same ["areas of concern"](https://en.wikipedia.org/wiki/Separation_of_concerns). 
 
@@ -34,7 +34,7 @@ So really, like programming languages themselves, design patterns are a type of 
 
 Salesforce development is particularly well-suited to design pattern implementation, in any org, because the underlying structure is the same everywhere. This is a huge windfall for us as Salesforce developers because we don't have to reinvent the wheel. There is a ton of code organization and layering baked right into the platform.
 
-Let's have an example. Remember the SObject class we reviewed in [week4](./week4.md)? Each of its subclasses (`Account`, `Case`, `My_Custom_Object__c`, etc.) are an implementation of the [Object Relational Mapper](https://en.wikipedia.org/wiki/Object-relational_mapping) pattern. Their area of concern is data and, more specifically, providing a progamming-friendly means of accessing and modifying data stored in the underlying database tables. 
+Let's have an example. Remember the SObject class we reviewed in [week4](./week4.md)? Each of its subclasses (`Account`, `Case`, `My_Custom_Object__c`, etc.) are an implementation of the [Data Mapper](https://martinfowler.com/eaaCatalog/dataMapper.html) pattern. Their area of concern is data and, more specifically, providing a progamming-friendly means of accessing and modifying data stored in the underlying database tables. 
 
 You may be thinking, *"Okay, okay, I see the benefits of the organization that Salesforce implements, but is there really a need for me to do the same with my custom code?"*. The answer, quite simply, is **yes**! That is, if you want to write scalable, flexible and maintainable code 😉
 
@@ -42,7 +42,7 @@ You may be thinking, *"Okay, okay, I see the benefits of the organization that S
 
 So, before you sit down and write any Apex code, you should find an appropriate pattern to implement first, right? No. Like abstractions in the code itself, design patterns are generally best left for **refactor** time, when a solution to a common concern has *emerged* as a need. 
 
-#### ...Well, At Least *Some* of the Things
+#### Okay, Design Pattern *Some* of the Things
 
 We touched above on the fact that all Salesforce orgs share the same underlying platform and code organization (standard library). More specifically, almost everything we do *in any org* revolves around the manipulation of SObjects, either directly or indirectly. 
 
@@ -58,7 +58,7 @@ Back already! You're fast 😉.
 
 Okay, so now that you have a good understanding of each of the layers, here's the exception to the **refactor** rule mentioned above: 
 
-> I recommend you implement the Service / Domain / Selector pattern in every single org in which you deploy code bound for production. 
+> I recommend you implement the Service / Domain / Selector layers in every single org in which you deploy code bound for production. 
 
 Even if the Salesforce org you're working in is small, with relatively little code, you should still implement at least the `Domain` and `Selector` layers. Why? Because they are so universal and applicable to the nature of how Salesforce's *core* is organized (SObject-centric) that they will set you up for faster code development that more dependably stands the test of time. 
 
