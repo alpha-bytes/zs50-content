@@ -43,7 +43,7 @@ The `content-type`, the data that makes up a body, is dependent on the server re
 
 The one that you really need to know, though, and which is used in the vast majority of web services built today, is `JSON` (Javascript Object Notation). Despite its name, you don't need to learn Javascript to work with JSON. It is a language-independent data exchange format. 
 
-[JSON](https://www.w3schools.com/js/js_json_intro.asp) is a lightweight format that is simply a collectin of name / value pairs. Names must be enclosed in double quotes (`"`), and values must be one of a handful of valid "primitive" types, including `string`, `number`, and `boolean`, as well as compound types `object` or `array`. Let's take a look at a simple example that might be used to represent the ZS50 class: 
+[JSON](https://www.w3schools.com/js/js_json_intro.asp) is a lightweight format that is simply a collection of name / value pairs. Names must be enclosed in double quotes (`"`), and values must be one of a handful of valid "primitive" types, including `string`, `number`, and `boolean`, as well as compound types `object` or `array`. Let's take a look at a simple example that might be used to represent the ZS50 class: 
 
 ```json
 {
@@ -65,7 +65,7 @@ The one that you really need to know, though, and which is used in the vast majo
 Let's review what we've covered so far: 
 - every URL on the web represents a resource
 - those resources are of some specific data type
-- many APIs today utilize the JSON data type to represent resources
+- most APIs today utilize the JSON data format to structure request and response bodies
 
 Okay, so let's start transforming these concepts into concrete examples. As we saw in CS50, when you make a request to a website you can use Chrome's [Developer Tools](https://developers.google.com/web/tools/chrome-devtools/) to view the network activity corresponding to your request. So, when you go to https://login.salesforce.com you should see something like the following as the first "network" entry: 
 
